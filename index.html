@@ -1,0 +1,1594 @@
+<!doctype html>
+<html lang="sr-Latn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Teg po teg</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Barlow:ital,wght@0,400;0,600;0,700;1,600&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root {
+  --ink: #15130f;
+  --black: #1d1a16;
+  --cream: #f3ecdf;
+  --dim: #3b3631;
+  --gray-l: #968d80;
+  --mist2: #bdb4a6;
+  --coal: #25211d;
+  --coal-2: #302b26;
+  --paper: var(--cream);
+  --soft: #e9e1d3;
+  --line: #d8cfbf;
+  --gray: #6e665a;
+  --mist: #cbc2b3;
+  --accent: #cc3b34;
+  --accent-rgb: 204 59 52;
+  --on-accent: var(--cream);
+  --flash: var(--black);
+  --display: "Anton", Impact, "Arial Narrow", sans-serif;
+  --heavy: "Archivo Black", "Arial Black", sans-serif;
+  --body: "Barlow", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --star: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  --para: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
+  --navh: 0px;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; background: var(--ink); }
+body {
+  margin: 0; color: var(--cream); font: 400 16px/1.6 var(--body); min-height: 100vh;
+  background: var(--ink); padding-bottom: calc(var(--navh) + env(safe-area-inset-bottom, 0px)); overflow-x: hidden;
+}
+/* pozadina: rasterske tačke + kosa crvena traka, lagano klize */
+body::before {
+  content: ""; position: fixed; inset: -40px; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(circle, rgb(255 255 255 / .07) 1.2px, transparent 1.6px) 0 0 / 16px 16px,
+    linear-gradient(118deg, transparent 0 58%, rgb(var(--accent-rgb) / .16) 58% 66%, transparent 66% 70%, rgb(var(--accent-rgb) / .08) 70% 72%, transparent 72%);
+  animation: drift 40s linear infinite;
+}
+@keyframes drift { to { transform: translate(16px, 16px); } }
+.wrap { max-width: 1080px; margin: 0 auto; padding-inline: 20px; }
+main.wrap { padding-block: 32px 96px; }
+h1, h2, h3 { margin: 0; font-weight: 400; line-height: 1.05; }
+h3 { font: 400 1.45rem/1.1 var(--display); letter-spacing: .01em; text-transform: uppercase; }
+p { margin: 0; }
+a { color: inherit; }
+.num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+[hidden] { display: none !important; }
+
+/* ---------- izrezana slova (naslovi) ---------- */
+.ransom { font-size: clamp(2rem, 5vw, 2.8rem); line-height: 1.25; }
+.rw { display: inline-block; white-space: nowrap; margin-right: .28em; }
+.rl { display: inline-block; padding: .02em .09em; margin: 0 .015em; transform: rotate(var(--r)); line-height: 1; transition: transform .2s; }
+.ransom:hover .rl { transform: rotate(calc(var(--r) * -1)) translateY(-2px); }
+.s0 { background: var(--cream); color: var(--black); font-family: var(--display); }
+.s1 { background: var(--black); color: var(--cream); font-family: var(--heavy); box-shadow: 0 0 0 2px var(--cream); font-size: .86em; }
+.s2 { background: var(--accent); color: var(--cream); font-family: var(--display); }
+.s3 { color: var(--cream); font-family: var(--heavy); font-size: 1.08em; }
+
+/* ---------- oznake, dugmad ---------- */
+.tag { display: inline-block; background: var(--black); color: var(--cream); padding: 5px 14px; clip-path: var(--para); font: 700 .74rem/1.2 var(--body); letter-spacing: .16em; text-transform: uppercase; }
+.tag.w { background: var(--cream); color: var(--black); }
+.tag.r { background: var(--accent); color: var(--cream); }
+.chip { display: inline-block; background: var(--cream); color: var(--black); padding: 5px 14px; clip-path: var(--para); font: 700 .82rem/1.2 var(--body); }
+.btn {
+  appearance: none; border: 0; cursor: pointer; text-decoration: none; white-space: nowrap;
+  font: 400 1.05rem/1 var(--display); letter-spacing: .06em; text-transform: uppercase;
+  background: var(--black); color: var(--cream); padding: 13px 20px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  transform: skewX(-10deg); box-shadow: 4px 4px 0 var(--accent); transition: transform .15s, box-shadow .15s, background .15s;
+}
+.btn:hover { transform: skewX(-10deg) translate(-2px, -2px); box-shadow: 7px 7px 0 var(--accent); }
+.btn:active { transform: skewX(-10deg) translate(2px, 2px); box-shadow: 1px 1px 0 var(--accent); }
+.btn.red { background: var(--accent); box-shadow: 4px 4px 0 var(--black); }
+.btn.red:hover { box-shadow: 7px 7px 0 var(--black); }
+.btn.w { background: var(--cream); color: var(--black); }
+.btn.sm { font-size: .88rem; padding: 9px 14px; }
+.btn:disabled { opacity: .35; cursor: not-allowed; transform: skewX(-10deg); box-shadow: none; }
+.link { font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; color: var(--black); }
+.link:hover { color: var(--accent); }
+.play::before { content: ""; width: 22px; height: 22px; background: var(--accent); clip-path: polygon(20% 10%, 90% 50%, 20% 90%); transition: transform .2s; }
+.link:hover.play::before { transform: scale(1.25) rotate(-8deg); }
+
+/* ---------- kartice ---------- */
+.card { background: var(--paper); color: var(--ink); padding: 24px; box-shadow: 6px 6px 0 var(--accent); position: relative; }
+.card.dark { background: var(--black); color: var(--cream); box-shadow: 6px 6px 0 var(--accent), inset 0 0 0 2px var(--cream); }
+.muted { color: var(--gray); }
+.card.dark .muted { color: var(--mist); }
+.enter { animation: enter .55s cubic-bezier(.2, .9, .25, 1.15) backwards; animation-delay: calc(var(--i, 0) * 60ms); }
+@keyframes enter { from { opacity: 0; transform: translateX(-28px) skewX(-8deg); } }
+
+/* ---------- zaglavlje ---------- */
+.bar { position: sticky; top: 0; z-index: 30; background: var(--black); border-bottom: 3px solid var(--accent); }
+.bar .wrap { display: flex; align-items: center; gap: 16px; padding-block: 10px; }
+.brand { font-size: 1.35rem; line-height: 1.2; white-space: nowrap; animation: enter .6s cubic-bezier(.2, .9, .25, 1.15) backwards; }
+.tabs { display: flex; gap: 6px; margin-left: auto; }
+.tab {
+  appearance: none; border: 0; cursor: pointer; background: transparent; color: var(--mist2);
+  font: 400 1.02rem/1 var(--display); letter-spacing: .08em; text-transform: uppercase;
+  padding: 11px 18px; clip-path: var(--para); display: inline-flex; align-items: center; gap: 8px; transition: color .15s, background .15s;
+}
+.tab svg { width: 18px; height: 18px; flex: none; }
+.tab:hover { color: var(--cream); background: var(--coal-2); }
+.tab[aria-current="page"] { background: var(--accent); color: var(--cream); }
+@media (max-width: 720px) {
+  :root { --navh: 66px; }
+  .bar .wrap { justify-content: center; }
+  .tabs { position: fixed; left: 0; right: 0; bottom: 0; margin: 0; z-index: 40; background: var(--black); border-top: 3px solid var(--accent);
+    padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px)); gap: 2px; }
+  .tab { flex: 1; flex-direction: column; gap: 4px; font-size: .78rem; padding: 8px 2px; justify-content: center; }
+  .tab svg { width: 20px; height: 20px; }
+}
+
+/* ---------- prelaz između kartica ---------- */
+.swipe { position: fixed; inset: 0; z-index: 60; pointer-events: none; overflow: hidden; }
+.swipe:not(.run) { visibility: hidden; }
+.swipe i { position: absolute; top: -20%; bottom: -20%; left: 0; width: 170%; transform: translateX(-120%) skewX(-18deg); }
+.swipe i:nth-child(1) { background: var(--accent); }
+.swipe i:nth-child(2) { background: var(--black); }
+.swipe i:nth-child(3) { background: var(--cream); width: 6%; }
+.swipe.run i:nth-child(1) { animation: sweep .62s cubic-bezier(.75, 0, .25, 1) both; }
+.swipe.run i:nth-child(2) { animation: sweep .62s .06s cubic-bezier(.75, 0, .25, 1) both; }
+.swipe.run i:nth-child(3) { animation: sweep .62s .1s cubic-bezier(.75, 0, .25, 1) both; }
+@keyframes sweep { 0% { transform: translateX(-120%) skewX(-18deg); } 50% { transform: translateX(-22%) skewX(-18deg); } 100% { transform: translateX(120%) skewX(-18deg); } }
+
+/* ---------- TRENING: glavna kartica ---------- */
+.hero {
+  position: relative; background: var(--accent); color: var(--cream); padding: 30px 34px 34px; overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 98% 100%, 0 100%);
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 24px; align-items: center;
+  animation: heroIn .7s cubic-bezier(.2, .9, .25, 1.1) backwards;
+}
+.hero::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(circle, rgb(0 0 0 / .22) 1.5px, transparent 2px) 0 0 / 12px 12px,
+    linear-gradient(118deg, transparent 0 64%, var(--black) 64% 72%, transparent 72% 75%, var(--black) 75% 76%, transparent 76%);
+  mask-image: linear-gradient(90deg, transparent 20%, var(--black) 70%);
+}
+@keyframes heroIn { from { opacity: 0; transform: translateX(-60px) skewX(-10deg); } }
+.hero > * { position: relative; }
+.hero h1 { font: 400 clamp(3rem, 9vw, 5.6rem)/.95 var(--display); text-transform: uppercase; letter-spacing: .01em; margin-top: 14px; text-shadow: 5px 5px 0 var(--black); transform: skewX(-6deg); transform-origin: left; }
+.hero .focus { font: 700 italic 1.2rem/1.3 var(--body); margin-top: 10px; }
+.hero .meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+.progress { margin-top: 20px; max-width: 420px; display: grid; gap: 8px; }
+.progress .lab { display: flex; justify-content: space-between; font: 700 .9rem/1 var(--mono); }
+.progress .track { height: 12px; background: var(--black); transform: skewX(-20deg); overflow: hidden; }
+.progress .fill { height: 100%; background: var(--cream); transition: width .45s cubic-bezier(.3, 1.4, .5, 1); }
+.hero-star { width: 170px; height: 170px; position: relative; display: grid; place-items: center; }
+.hero-star::before, .hero-star::after { content: ""; position: absolute; inset: 0; clip-path: var(--star); }
+.hero-star::before { background: var(--cream); animation: spin 24s linear infinite; }
+.hero-star::after { inset: 14px; background: var(--black); animation: spin 24s linear infinite reverse; }
+.hero-star b { position: relative; z-index: 1; font: 400 1.7rem/1 var(--display); color: var(--cream); letter-spacing: .04em; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- TRENING: dani ---------- */
+.week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; margin-top: 22px; }
+.day {
+  appearance: none; border: 0; cursor: pointer; font: inherit; color: var(--cream); background: var(--coal);
+  clip-path: var(--para); padding: 12px 14px 14px 18px; text-align: left; display: grid; gap: 4px; position: relative;
+  transition: background .15s, transform .15s;
+}
+.day:hover { background: var(--coal-2); transform: translateY(-3px); }
+.day[aria-pressed="true"] { background: var(--accent); }
+.day .dn { font: 700 .74rem/1 var(--body); letter-spacing: .16em; text-transform: uppercase; color: var(--mist2); }
+.day[aria-pressed="true"] .dn { color: var(--cream); }
+.day .df { font: 400 1.05rem/1.05 var(--display); text-transform: uppercase; letter-spacing: .03em; }
+.day.rest .df { color: var(--gray-l); }
+.day[aria-pressed="true"].rest .df { color: var(--cream); }
+.day .now { position: absolute; top: 7px; right: 14px; width: 13px; height: 13px; background: var(--cream); clip-path: var(--star); }
+
+/* ---------- TRENING: vežbe ---------- */
+.session { margin-top: 26px; display: grid; gap: 20px; }
+.exc { display: grid; gap: 16px; transition: box-shadow .2s, transform .2s; }
+.exc:hover { box-shadow: 9px 9px 0 var(--accent); transform: translate(-2px, -2px); }
+.exc.complete { box-shadow: 6px 6px 0 var(--black), 6px 6px 0 2px var(--cream); }
+.exc-top { display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; gap: 16px; align-items: center; }
+.ord { width: 46px; height: 46px; background: var(--accent); color: var(--cream); clip-path: var(--star); display: grid; place-items: center; font: 400 1rem/1 var(--display); padding-top: 3px; transition: background .2s; }
+.exc.complete .ord { background: var(--black); }
+.exc h3 { font-size: 1.55rem; }
+.musc { font: 600 .8rem/1.3 var(--body); color: var(--gray); text-transform: uppercase; letter-spacing: .08em; margin-top: 4px; }
+.rx { text-align: right; }
+.rx b { display: block; font: 400 1.6rem/1 var(--display); letter-spacing: .02em; }
+.rx small { font: 600 .78rem/1 var(--body); color: var(--gray); }
+.exc-work { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: center; padding-left: 62px; }
+.stepper { display: inline-flex; align-items: stretch; border: 2px solid var(--black); background: var(--cream); }
+.stepper button { appearance: none; border: 0; background: var(--black); color: var(--cream); width: 42px; font: 700 1.3rem/1 var(--body); cursor: pointer; transition: background .15s; }
+.stepper button:hover { background: var(--accent); }
+.stepper button:active { transform: scale(.92); }
+.stepper label { display: grid; justify-items: center; padding: 4px 8px 5px; min-width: 76px; cursor: text; }
+.stepper input { width: 62px; border: 0; padding: 0; text-align: center; font: 700 1.25rem/1.2 var(--mono); color: var(--black); background: transparent; -moz-appearance: textfield; }
+.stepper input:focus { outline: none; }
+.stepper:focus-within { box-shadow: 3px 3px 0 var(--accent); }
+.stepper input::-webkit-outer-spin-button, .stepper input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.stepper .u { font: 700 .62rem/1 var(--body); letter-spacing: .12em; text-transform: uppercase; color: var(--gray); }
+.sets { display: flex; gap: 10px; flex-wrap: wrap; }
+.set {
+  appearance: none; position: relative; width: 50px; height: 50px; border: 2px solid var(--black); background: var(--cream); color: var(--black); cursor: pointer;
+  font: 400 1.15rem/1 var(--display); transform: skewX(-12deg); transition: background .15s, color .15s, transform .15s;
+}
+.set:hover { transform: skewX(-12deg) translateY(-3px); }
+.set[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--cream); }
+.set[aria-pressed="true"] span { display: none; }
+.set[aria-pressed="true"]::after { content: "✓"; font: 700 1.3rem/1 var(--body); }
+.set.pop { animation: pop .4s cubic-bezier(.3, 1.9, .5, 1); }
+.set.pop::before { content: ""; position: absolute; inset: -18px; background: var(--black); clip-path: var(--star); z-index: -1; animation: burst .5s ease-out forwards; }
+@keyframes pop { 0% { transform: skewX(-12deg) scale(.6) rotate(-10deg); } 100% { transform: skewX(-12deg) scale(1); } }
+@keyframes burst { 0% { transform: scale(.3) rotate(0); opacity: 1; } 100% { transform: scale(1.5) rotate(40deg); opacity: 0; } }
+.hint { position: relative; margin-left: 62px; background: var(--black); color: var(--cream); padding: 12px 16px; font-size: .95rem; max-width: 560px; }
+.hint::before { content: ""; position: absolute; left: 22px; top: -9px; border: 9px solid transparent; border-top: 0; border-bottom-color: var(--black); }
+.hint b { color: var(--cream); background: var(--accent); padding: 0 5px; }
+.hint.up { background: var(--accent); }
+.hint.up::before { border-bottom-color: var(--accent); }
+.hint.up b { background: var(--black); }
+.exc-foot { display: flex; flex-wrap: wrap; gap: 10px 26px; align-items: center; padding-left: 62px; }
+.how { flex: 1 1 100%; }
+.how summary { cursor: pointer; list-style: none; font-weight: 700; display: inline-flex; align-items: center; gap: 8px; }
+.how summary::-webkit-details-marker { display: none; }
+.how summary::before { content: "+"; width: 22px; height: 22px; background: var(--black); color: var(--cream); display: grid; place-items: center; font: 700 1rem/1 var(--body); transition: transform .25s, background .2s; }
+.how[open] summary::before { transform: rotate(135deg); background: var(--accent); }
+.how summary:hover { color: var(--accent); }
+.how-body { margin-top: 14px; background: var(--soft); padding: 18px 20px; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px 30px; animation: enter .4s cubic-bezier(.2, .9, .25, 1.1) backwards; }
+.how-body ol { margin: 0; padding-left: 22px; display: grid; gap: 10px; }
+.how-body ol li::marker { font: 400 1.05rem var(--display); color: var(--accent); }
+.how-body dl { margin: 0; display: grid; gap: 12px; align-content: start; }
+.how-body dt { font: 700 .7rem/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--gray); margin-bottom: 4px; }
+.how-body dd { margin: 0; }
+.how-body dd.bad { color: var(--accent); font-weight: 600; }
+.warm { display: flex; gap: 16px; align-items: center; }
+.warm .ord { background: var(--black); flex: none; }
+.finish { background: var(--black); color: var(--cream); padding: 22px 26px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; box-shadow: 6px 6px 0 var(--accent), inset 0 0 0 2px var(--cream); }
+.finish strong { font: 400 1.5rem/1.1 var(--display); letter-spacing: .03em; display: block; margin-top: 6px; }
+.rest-card ul { margin: 16px 0 0; padding: 0; list-style: none; display: grid; gap: 14px; font-size: 1.1rem; }
+.rest-card li { display: flex; gap: 14px; align-items: center; }
+.rest-card li::before { content: ""; width: 18px; height: 18px; background: var(--accent); clip-path: var(--star); flex: none; }
+
+/* ---------- tajmer ---------- */
+.timer {
+  position: fixed; left: 50%; bottom: calc(var(--navh) + 16px + env(safe-area-inset-bottom, 0px)); z-index: 35;
+  width: min(480px, calc(100% - 24px)); background: var(--black); color: var(--cream); padding: 12px 16px;
+  box-shadow: 6px 6px 0 var(--accent), inset 0 0 0 2px var(--cream); display: grid; grid-template-columns: auto 1fr auto auto; gap: 14px; align-items: center;
+  transform: translateX(-50%); animation: timerIn .45s cubic-bezier(.2, 1.3, .4, 1) backwards;
+}
+@keyframes timerIn { from { transform: translate(-50%, 140%) skewX(-10deg); } }
+.timer .t { font: 400 2.3rem/1 var(--display); min-width: 3.2ch; letter-spacing: .02em; }
+.timer .tl { font: 700 .7rem/1.2 var(--body); letter-spacing: .16em; text-transform: uppercase; color: var(--mist2); }
+.timer .tb { height: 6px; background: var(--dim); margin-top: 8px; transform: skewX(-20deg); overflow: hidden; }
+.timer .tb i { display: block; height: 100%; background: var(--accent); }
+.timer .btn { font-size: .85rem; padding: 9px 12px; }
+.timer.go { background: var(--accent); animation: flash .5s steps(2) 4; }
+.timer.go .tl { color: var(--cream); }
+.timer.go .tb i { background: var(--cream); }
+@keyframes flash { 50% { background: var(--flash); } }
+
+/* ---------- završni natpis ---------- */
+.splash { position: fixed; inset: 0; z-index: 70; display: grid; place-items: center; pointer-events: none; background: rgb(0 0 0 / .6); overflow: hidden; }
+.splash.run { animation: fadeio 2s both; }
+.splash .band { width: 150%; background: var(--cream); color: var(--black); text-align: center; padding: 26px 0 22px; transform: rotate(-8deg); box-shadow: 0 12px 0 var(--accent), 0 -12px 0 var(--accent), 0 24px 0 var(--black), 0 -24px 0 var(--black); }
+.splash.run .band { animation: slam 2s cubic-bezier(.2, 1.3, .4, 1) both; }
+.splash b { display: block; font: 400 clamp(2.6rem, 10vw, 6.4rem)/1 var(--display); letter-spacing: .03em; }
+.splash span { display: inline-block; margin-top: 8px; background: var(--black); color: var(--cream); padding: 6px 18px; font: 700 1rem/1.2 var(--body); letter-spacing: .14em; text-transform: uppercase; clip-path: var(--para); }
+@keyframes slam { 0% { transform: rotate(-8deg) translateX(-110%); } 16% { transform: rotate(-8deg) translateX(2%); } 22% { transform: rotate(-8deg) translateX(0); } 82% { transform: rotate(-8deg) translateX(0); } 100% { transform: rotate(-8deg) translateX(110%); } }
+@keyframes fadeio { 0% { opacity: 0; } 8% { opacity: 1; } 86% { opacity: 1; } 100% { opacity: 0; } }
+
+/* ---------- naslovi odeljaka ---------- */
+.vh { display: grid; gap: 12px; margin-bottom: 24px; }
+.vh p { color: var(--mist2); max-width: 52ch; font-size: 1.05rem; }
+.vh.gap { margin-top: 64px; }
+
+/* ---------- ISHRANA ---------- */
+.cal { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 26px; align-items: start; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.form-grid .full { grid-column: 1 / -1; }
+.field { display: grid; gap: 7px; }
+.lbl, .field > label { font: 700 .72rem/1.2 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--gray); }
+input, select { font: 600 1rem/1.3 var(--body); color: var(--black); background: var(--cream); border: 2px solid var(--black); padding: 10px 12px; width: 100%; min-width: 0; border-radius: 0; }
+input:focus, select:focus { outline: none; box-shadow: 4px 4px 0 var(--accent); }
+input[type=file] { font-size: .9rem; padding: 8px; }
+.seg { display: flex; border: 2px solid var(--black); }
+.seg label { flex: 1; text-align: center; padding: 11px 6px; cursor: pointer; font: 700 .8rem/1.2 var(--body); position: relative; transition: background .15s, color .15s; }
+.seg label + label { border-left: 2px solid var(--black); }
+.seg input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.seg label:hover { background: var(--soft); }
+.seg label:has(input:checked) { background: var(--accent); color: var(--cream); }
+.seg label:has(input:focus-visible) { outline: 3px solid var(--accent); outline-offset: 2px; }
+.big { font: 400 clamp(4rem, 12vw, 6.2rem)/.9 var(--display); color: var(--accent); margin-top: 10px; letter-spacing: .01em; }
+.big small { font-size: 1.4rem; color: var(--cream); margin-left: 8px; }
+.goal-line { color: var(--mist); margin-top: 12px; font-size: 1.05rem; }
+.ladder { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 24px; padding-top: 20px; border-top: 2px solid var(--dim); }
+.ladder div { display: grid; gap: 6px; }
+.ladder .v { font: 700 1.2rem/1 var(--mono); }
+.macros { margin-top: 24px; display: grid; gap: 14px; }
+.macro-bar { display: flex; gap: 3px; height: 16px; transform: skewX(-20deg); }
+.macro-bar i { display: block; height: 100%; transform-origin: left; animation: grow .8s cubic-bezier(.2, .9, .3, 1) backwards; }
+@keyframes grow { from { transform: scaleX(0); } }
+.macro-rows { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.macro-rows div { display: grid; gap: 4px; }
+.macro-rows .g { font: 400 1.9rem/1 var(--display); }
+.sw { display: inline-block; width: 12px; height: 12px; margin-right: 6px; vertical-align: -1px; }
+.note { font-size: .88rem; color: var(--mist); margin-top: 18px; }
+.basics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+.basic { display: grid; gap: 12px; align-content: start; }
+.basic .per { font: 400 2.2rem/1 var(--display); color: var(--accent); }
+.basic .per small { font-size: 1rem; color: var(--gray); margin-left: 4px; }
+.basic p { font-size: 1rem; }
+.basic .src { font: 600 .84rem/1.4 var(--body); color: var(--gray); }
+.basic .you { font: 700 .92rem/1.3 var(--mono); background: var(--black); color: var(--cream); padding: 8px 12px; }
+.tips { margin: 26px 0 0; padding: 0; list-style: none; display: grid; gap: 12px; max-width: 70ch; font-size: 1.02rem; }
+.tips li { display: flex; gap: 14px; align-items: baseline; }
+.tips li::before { content: ""; width: 14px; height: 14px; background: var(--accent); clip-path: var(--star); flex: none; transform: translateY(1px); }
+.menu-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 22px; }
+.menu-tabs button { appearance: none; border: 0; cursor: pointer; clip-path: var(--para); padding: 12px 24px; background: var(--coal); color: var(--mist2); font: 400 1.05rem/1 var(--display); letter-spacing: .05em; text-transform: uppercase; transition: background .15s, color .15s; }
+.menu-tabs button:hover { background: var(--coal-2); color: var(--cream); }
+.menu-tabs button[aria-selected="true"] { background: var(--cream); color: var(--black); }
+.day-total { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 26px; }
+.tile { background: var(--black); box-shadow: inset 0 0 0 2px var(--cream); padding: 16px 18px; display: grid; gap: 6px; }
+.tile .v { font: 400 2.1rem/1 var(--display); }
+.tile .d { font: 600 .82rem/1.2 var(--body); color: var(--mist2); }
+.tile .d.ok { color: var(--cream); }
+.tile .d.ok::before { content: "★ "; color: var(--accent); }
+.meals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px; }
+.meal { display: grid; gap: 16px; align-content: start; }
+.meal-head { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+.meal-head h3 { margin-top: 10px; font-size: 1.6rem; }
+.meal-head .k { font: 400 1.9rem/1 var(--display); color: var(--accent); white-space: nowrap; }
+.meal-head .k small { font-size: .9rem; color: var(--gray); margin-left: 3px; }
+.foods { list-style: none; margin: 0; padding: 0; display: grid; }
+.foods li { display: grid; grid-template-columns: 7.4em minmax(0, 1fr) auto; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+.foods li:last-child { border-bottom: 0; }
+.foods .amt { font: 700 .92rem/1.2 var(--mono); }
+.foods .kc { font: 500 .8rem/1 var(--mono); color: var(--gray); }
+.mchips { display: flex; gap: 8px; flex-wrap: wrap; }
+.mchips span { font: 700 .8rem/1 var(--body); padding: 6px 10px; background: var(--soft); }
+.mchips span b { color: var(--accent); }
+.prep summary { cursor: pointer; font-weight: 700; list-style: none; display: inline-flex; gap: 8px; align-items: center; }
+.prep summary::-webkit-details-marker { display: none; }
+.prep summary::before { content: "+"; width: 20px; height: 20px; background: var(--black); color: var(--cream); display: grid; place-items: center; font-weight: 700; transition: transform .25s, background .2s; }
+.prep[open] summary::before { transform: rotate(135deg); background: var(--accent); }
+.prep p { margin-top: 10px; color: var(--dim); }
+.swaps { margin-top: 30px; }
+.swaps summary { cursor: pointer; list-style: none; font: 400 1.3rem/1 var(--display); letter-spacing: .04em; text-transform: uppercase; display: inline-flex; gap: 10px; align-items: center; }
+.swaps summary::-webkit-details-marker { display: none; }
+.swaps summary::before { content: "+"; width: 26px; height: 26px; background: var(--accent); color: var(--cream); display: grid; place-items: center; font: 700 1.1rem/1 var(--body); transition: transform .25s; }
+.swaps[open] summary::before { transform: rotate(135deg); }
+.swaps .tips { margin-top: 18px; }
+
+/* ---------- DNEVNIK ---------- */
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 26px; }
+.chart-card { margin-bottom: 26px; display: grid; gap: 16px; }
+.chart-head { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; }
+.chart-head h3 { margin-top: 10px; }
+.chart-head select { width: auto; flex: 0 1 320px; }
+.chart-box { position: relative; }
+.chart-box svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart-box .grid { stroke: var(--line); stroke-width: 1; }
+.chart-box .axis-t { fill: var(--gray); font: 500 11px var(--mono); }
+.chart-box .ln { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; stroke-dasharray: var(--len); stroke-dashoffset: var(--len); animation: draw 1s .15s cubic-bezier(.4, 0, .2, 1) forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.chart-box .area { fill: rgb(var(--accent-rgb) / .09); }
+.chart-box .pt { fill: var(--accent); stroke: var(--cream); stroke-width: 2; }
+.chart-box .end-t { fill: var(--black); font: 700 12px var(--mono); }
+.chart-box .xh { stroke: var(--black); stroke-width: 1; stroke-dasharray: 3 3; }
+.chart-box .tip { position: absolute; pointer-events: none; background: var(--black); color: var(--cream); padding: 8px 12px; font: 600 .82rem/1.4 var(--body); white-space: nowrap; transform: translate(-50%, calc(-100% - 14px)); box-shadow: 3px 3px 0 var(--accent); }
+.chart-empty { padding: 40px 16px; text-align: center; color: var(--gray); background: var(--soft); }
+.history-tools { display: flex; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+.history-tools select { flex: 1 1 220px; }
+.table-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+th { text-align: left; font: 700 .7rem/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--gray); padding: 12px; border-bottom: 2px solid var(--black); white-space: nowrap; }
+td { padding: 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+td.n { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+td .pr { font: 400 .72rem/1 var(--display); letter-spacing: .08em; background: var(--accent); color: var(--cream); padding: 3px 8px; margin-left: 8px; clip-path: var(--para); display: inline-block; }
+td .nt { color: var(--gray); font-size: .86rem; }
+.date-row td { background: var(--black); color: var(--cream); font: 400 .9rem/1 var(--display); letter-spacing: .08em; padding: 9px 12px; text-transform: uppercase; }
+.empty { padding: 36px 20px; text-align: center; display: grid; gap: 16px; justify-items: center; color: var(--gray); }
+.manual { margin-top: 26px; }
+.manual > summary, .backup > summary { cursor: pointer; list-style: none; font: 400 1.35rem/1 var(--display); letter-spacing: .04em; text-transform: uppercase; display: flex; gap: 12px; align-items: center; }
+.manual > summary::-webkit-details-marker, .backup > summary::-webkit-details-marker { display: none; }
+.manual > summary::before, .backup > summary::before { content: "+"; width: 26px; height: 26px; background: var(--accent); color: var(--cream); display: grid; place-items: center; font: 700 1.1rem/1 var(--body); transition: transform .25s; flex: none; }
+.manual[open] > summary::before, .backup[open] > summary::before { transform: rotate(135deg); }
+.log-form { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 20px; align-items: end; }
+.log-form .w2 { grid-column: span 2; }
+.backup { margin-top: 26px; }
+.backup-body { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; margin-top: 20px; }
+.backup-body > div { display: grid; gap: 14px; align-content: start; }
+.btns { display: flex; gap: 14px; flex-wrap: wrap; }
+.msg { font-weight: 600; min-height: 1.4em; }
+.msg.ok { color: var(--black); }
+.msg.ok::before { content: "★ "; color: var(--accent); }
+.msg.err { color: var(--accent); }
+
+/* ---------- SAVETI ---------- */
+.rules { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; }
+.rule { display: grid; gap: 10px; align-content: start; }
+.rule .k { font: 400 2.4rem/1 var(--display); color: var(--accent); }
+.rule p { font-size: 1rem; color: var(--dim); }
+.why { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 26px; align-items: start; }
+.why ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 16px; font-size: 1.05rem; }
+.why li { display: flex; gap: 14px; align-items: baseline; }
+.why li::before { content: ""; width: 16px; height: 16px; background: var(--accent); clip-path: var(--star); flex: none; transform: translateY(2px); }
+.vol td { vertical-align: middle; padding: 9px 12px; }
+.vol .barcell { width: 50%; }
+.vb { position: relative; height: 14px; background: var(--soft); transform: skewX(-20deg); }
+.vb .band { position: absolute; top: 0; bottom: 0; background: rgb(var(--accent-rgb) / .2); }
+.vb i { position: absolute; left: 0; top: 3px; bottom: 3px; background: var(--black); transform-origin: left; animation: grow .9s cubic-bezier(.2, .9, .3, 1) backwards; animation-delay: calc(var(--i, 0) * 50ms); }
+.faq { display: grid; gap: 14px; }
+.faq details { padding: 0 24px; }
+.faq summary { cursor: pointer; list-style: none; padding: 20px 0; font: 400 1.3rem/1.2 var(--display); letter-spacing: .02em; text-transform: uppercase; display: flex; justify-content: space-between; gap: 16px; align-items: center; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; width: 28px; height: 28px; flex: none; background: var(--black); color: var(--cream); display: grid; place-items: center; font: 700 1.1rem/1 var(--body); transition: transform .25s, background .2s; }
+.faq details[open] summary::after { transform: rotate(135deg); background: var(--accent); }
+.faq .a { padding-bottom: 22px; display: grid; gap: 12px; max-width: 64ch; font-size: 1.02rem; color: var(--coal-2); animation: enter .4s cubic-bezier(.2, .9, .25, 1.1) backwards; }
+.faq .a ul { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
+footer { margin-top: 56px; font-size: .9rem; color: var(--gray-l); max-width: 64ch; }
+
+/* ---------- obaveštenje ---------- */
+.toast { position: fixed; right: 20px; top: 76px; z-index: 50; pointer-events: none; background: var(--cream); color: var(--black); padding: 12px 22px; font: 400 1.05rem/1.2 var(--display); letter-spacing: .05em; text-transform: uppercase; box-shadow: 5px 5px 0 var(--accent); transform: translateX(130%) skewX(-10deg); transition: transform .35s cubic-bezier(.2, 1.3, .4, 1); max-width: calc(100% - 40px); }
+.toast.show { transform: translateX(0) skewX(-10deg); }
+
+/* ---------- teme: crvena (P5), plava (P3), žuta (P4) ---------- */
+:root[data-accent="blue"] { --accent: #3f6fd0; --accent-rgb: 63 111 208; }
+:root[data-accent="yellow"] { --accent: #ebc03f; --accent-rgb: 235 192 63; --on-accent: var(--black); --flash: var(--cream); }
+/* sve što stoji na boji teme uzima --on-accent (crno na žutoj) */
+.s2, .tag.r, .btn.red, .tab[aria-current="page"], .day[aria-pressed="true"], .day[aria-pressed="true"] .dn, .day[aria-pressed="true"].rest .df,
+.ord, .set[aria-pressed="true"], .hint.up, .hint b, .timer.go, .timer.go .tl, td .pr, .seg label:has(input:checked), .hero { color: var(--on-accent); }
+.how[open] summary::before, .prep[open] summary::before, .swaps summary::before, .manual > summary::before, .backup > summary::before,
+.faq details[open] summary::after { color: var(--on-accent); }
+.hint.up b, .exc.complete .ord, .warm .ord { color: var(--cream); }
+:root[data-accent="yellow"] .hero h1 { text-shadow: 5px 5px 0 var(--cream); }
+:root[data-accent="yellow"] .hero::before { opacity: .55; }
+.accents { display: flex; gap: 6px; margin-left: 14px; }
+.acc { appearance: none; border: 0; cursor: pointer; width: 26px; height: 26px; clip-path: var(--para); background: var(--c); opacity: .45; transition: opacity .15s, transform .15s; }
+.acc:hover { opacity: .8; transform: translateY(-2px); }
+.acc[aria-pressed="true"] { opacity: 1; transform: scale(1.15); }
+.acc:focus-visible { outline: 2px solid var(--cream); outline-offset: 2px; }
+
+@media (max-width: 900px) {
+  .cal, .meals, .why, .backup-body { grid-template-columns: 1fr; }
+  .basics, .rules { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .week { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .stats, .day-total { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .how-body { grid-template-columns: 1fr; }
+  .log-form { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .wrap { padding-inline: 16px; }
+  main.wrap { padding-block: 22px 120px; }
+  .card { padding: 20px 18px; }
+  .hero { grid-template-columns: 1fr; padding: 24px 22px 28px; clip-path: none; }
+  .hero-star { display: none; }
+  .week { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 3px; }
+  .day { clip-path: none; padding: 10px 2px; text-align: center; justify-items: center; }
+  .day .df { display: none; }
+  .day .dn { font-size: .72rem; letter-spacing: .06em; }
+  .day .now { top: 3px; right: 3px; width: 9px; height: 9px; }
+  .exc-top { grid-template-columns: 40px minmax(0, 1fr); }
+  .ord { width: 40px; height: 40px; }
+  .rx { grid-column: 2; text-align: left; }
+  .rx b { display: inline; font-size: 1.3rem; margin-right: 8px; }
+  .exc-work, .exc-foot { padding-left: 0; }
+  .hint { margin-left: 0; }
+  .basics, .rules { grid-template-columns: 1fr; }
+  .foods li { grid-template-columns: 6.6em minmax(0, 1fr) auto; }
+  .toast { right: 12px; top: 64px; }
+  .timer { grid-template-columns: auto 1fr; }
+  .timer .btn { grid-row: 2; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .chart-box .ln { stroke-dashoffset: 0; }
+}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <div class="brand ransom" data-ransom>Teg po teg</div>
+    <nav class="tabs" aria-label="Delovi aplikacije">
+      <button class="tab" type="button" data-view="trening"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 7v10M3 9v6M18 7v10M21 9v6M6 12h12"/></svg>Trening</button>
+      <button class="tab" type="button" data-view="ishrana"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M3 12h18a9 9 0 0 1-18 0Z"/><path d="M8 8c0-2 2-2 2-4M13 8c0-2 2-2 2-4"/></svg>Ishrana</button>
+      <button class="tab" type="button" data-view="dnevnik"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18"/><path d="M4 16l5-5 4 3 7-8"/></svg>Dnevnik</button>
+      <button class="tab" type="button" data-view="saveti"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7.3L12 17.6 5.7 21.5l1.7-7.3L2 9.5l7.1-.6z"/></svg>Saveti</button>
+    </nav>
+    <div class="accents" role="group" aria-label="Boja teme">
+      <button class="acc" type="button" data-accent="red" style="--c:#cc3b34" aria-label="Crvena tema" title="Crvena"></button>
+      <button class="acc" type="button" data-accent="blue" style="--c:#3f6fd0" aria-label="Plava tema" title="Plava"></button>
+      <button class="acc" type="button" data-accent="yellow" style="--c:#ebc03f" aria-label="Žuta tema" title="Žuta"></button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- =================== TRENING =================== -->
+  <section data-view="trening" aria-label="Trening">
+    <div class="hero" id="hero"></div>
+    <div class="week" id="week" role="group" aria-label="Dani u nedelji"></div>
+    <div class="session" id="session"></div>
+  </section>
+
+  <!-- =================== ISHRANA =================== -->
+  <section data-view="ishrana" aria-label="Ishrana" hidden>
+    <div class="vh">
+      <h2 class="ransom" data-ransom>Tvoje kalorije</h2>
+      <p>Meri se 3–4 jutra nedeljno. Ako se prosek ne pomeri za 2–3 nedelje, promeni unos za 100–200 kcal.</p>
+    </div>
+    <div class="cal">
+      <form class="card form-grid enter" id="calForm" autocomplete="off">
+        <div class="field full">
+          <span class="lbl">Pol</span>
+          <div class="seg">
+            <label><input type="radio" name="sex" id="sexM" value="m" checked>Muški</label>
+            <label><input type="radio" name="sex" id="sexF" value="f">Ženski</label>
+          </div>
+        </div>
+        <div class="field"><label for="age">Godine</label><input id="age" type="number" min="14" max="90" value="22" inputmode="numeric"></div>
+        <div class="field"><label for="height">Visina (cm)</label><input id="height" type="number" min="120" max="230" value="178" inputmode="decimal"></div>
+        <div class="field"><label for="bw">Težina (kg)</label><input id="bw" type="number" min="35" max="250" step="0.1" value="75" inputmode="decimal"></div>
+        <div class="field">
+          <label for="activity">Aktivnost</label>
+          <select id="activity">
+            <option value="1.375">Sedeći posao</option>
+            <option value="1.55" selected>Dosta na nogama</option>
+            <option value="1.725">Fizički posao</option>
+            <option value="1.2">Retko treniram</option>
+          </select>
+        </div>
+        <div class="field full">
+          <span class="lbl">Cilj</span>
+          <div class="seg">
+            <label><input type="radio" name="goal" id="goalCut" value="-450">Manje masti</label>
+            <label><input type="radio" name="goal" id="goalRecomp" value="0" checked>Oba</label>
+            <label><input type="radio" name="goal" id="goalBulk" value="250">Više mišića</label>
+          </div>
+        </div>
+      </form>
+      <div class="card dark enter" style="--i:1">
+        <span class="tag w">Jedi oko</span>
+        <div class="big" id="kcal">—</div>
+        <p class="goal-line" id="goalLine"></p>
+        <div class="ladder">
+          <div><span class="lbl">Bazalno</span><span class="v" id="bmr">—</span></div>
+          <div><span class="lbl">Održavanje</span><span class="v" id="tdee">—</span></div>
+          <div><span class="lbl">Voda</span><span class="v" id="water">—</span></div>
+        </div>
+        <div class="macros" id="macros">
+          <div class="macro-bar" id="macroBar" aria-hidden="true"></div>
+          <div class="macro-rows" id="macroRows"></div>
+        </div>
+        <p class="note">Procena, a ne medicinski savet.</p>
+      </div>
+    </div>
+
+    <div class="vh gap">
+      <h2 class="ransom" data-ransom>Šta su makroi</h2>
+      <p>Sva hrana se svodi na tri stvari. Svaka nosi kalorije.</p>
+    </div>
+    <div class="basics">
+      <div class="card basic enter"><span class="tag">Kalorije</span><div class="per">Energija</div><p>Više od potrošnje: dobijaš. Manje: gubiš.</p><span class="you" id="bxK">—</span></div>
+      <div class="card basic enter" style="--i:1"><span class="tag r">Proteini</span><div class="per">4<small>kcal / g</small></div><p>Grade mišiće i drže sitost. Najvažniji za tebe.</p><span class="src">piletina · riba · jaja · jogurt · sir</span><span class="you" id="bxP">—</span></div>
+      <div class="card basic enter" style="--i:2"><span class="tag">Ugljeni hidrati</span><div class="per">4<small>kcal / g</small></div><p>Gorivo za trening. Ne goje sami po sebi.</p><span class="src">pirinač · ovas · krompir · testenina · voće</span><span class="you" id="bxC">—</span></div>
+      <div class="card basic enter" style="--i:3"><span class="tag">Masti</span><div class="per">9<small>kcal / g</small></div><p>Za hormone. Kašika ulja ≈ 120 kcal.</p><span class="src">ulje · orašasti plodovi · jaja · losos</span><span class="you" id="bxF">—</span></div>
+    </div>
+    <ul class="tips">
+      <li>Meri na kuhinjskoj vagi: meso sirovo, pirinač i pahuljice suve.</li>
+      <li>Protein u svakom obroku, oko jedan dlan.</li>
+      <li>Pij vodu. Alkohol i sokove svedi na minimum.</li>
+    </ul>
+
+    <div class="vh gap">
+      <h2 class="ransom" data-ransom>Jelovnik</h2>
+      <p>Tri dana obroka. Količine prate tvoj cilj iz kalkulatora.</p>
+    </div>
+    <div class="menu-tabs" id="menuTabs" role="tablist" aria-label="Dani jelovnika"></div>
+    <div class="day-total" id="dayTotal"></div>
+    <div class="meals" id="mealList"></div>
+    <details class="swaps">
+      <summary>Zamene namirnica</summary>
+      <ul class="tips">
+        <li>Piletina ↔ ćuretina ↔ oslić (ista količina)</li>
+        <li>100 g suvog pirinča ≈ 100 g suve testenine ≈ 450 g krompira</li>
+        <li>Losos skup? Skuša ima slične vrednosti.</li>
+        <li>Bez mesa: tofu, više jaja, jogurta i sira, plus sočivo ili pasulj.</li>
+      </ul>
+    </details>
+  </section>
+
+  <!-- =================== DNEVNIK =================== -->
+  <section data-view="dnevnik" aria-label="Dnevnik" hidden>
+    <div class="vh">
+      <h2 class="ransom" data-ransom>Dnevnik</h2>
+      <p>Beležiš u kartici Trening. Ovde su napredak i istorija.</p>
+    </div>
+    <div class="stats">
+      <div class="tile enter"><span class="lbl" style="color:var(--mist2)">Treninga · 7 dana</span><span class="v" id="stWeek">0</span></div>
+      <div class="tile enter" style="--i:1"><span class="lbl" style="color:var(--mist2)">Ukupno treninga</span><span class="v" id="stSessions">0</span></div>
+      <div class="tile enter" style="--i:2"><span class="lbl" style="color:var(--mist2)">Serija</span><span class="v" id="stSets">0</span></div>
+      <div class="tile enter" style="--i:3"><span class="lbl" style="color:var(--mist2)">Podignuto · 7 dana</span><span class="v" id="stVol">0</span></div>
+    </div>
+
+    <div class="card chart-card enter">
+      <div class="chart-head">
+        <div><span class="tag r">Napredak</span><h3 id="chartTitle">Najveća težina</h3></div>
+        <select id="chartEx" aria-label="Vežba za grafikon"></select>
+      </div>
+      <div class="chart-box" id="chartBox"></div>
+    </div>
+
+    <div class="card enter" style="--i:1">
+      <div class="history-tools"><span class="tag">Istorija</span><select id="filter" aria-label="Filtriraj istoriju po vežbi"></select></div>
+      <div class="table-scroll">
+        <table>
+          <thead><tr><th>Vežba</th><th>Serije × pon.</th><th>Težina</th><th></th></tr></thead>
+          <tbody id="hist"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <details class="card manual">
+      <summary>Dodaj ručno</summary>
+      <form class="log-form" id="logForm" autocomplete="off">
+        <div class="field w2"><label for="lEx">Vežba</label><select id="lEx" required></select></div>
+        <div class="field w2" id="customWrap" hidden><label for="lCustom">Naziv vežbe</label><input id="lCustom" type="text" maxlength="60" placeholder="npr. Hack čučanj"></div>
+        <div class="field"><label for="lDate">Datum</label><input id="lDate" type="date" required></div>
+        <div class="field"><label for="lSets">Serije</label><input id="lSets" type="number" min="1" max="20" value="3" required inputmode="numeric"></div>
+        <div class="field"><label for="lReps">Ponavljanja</label><input id="lReps" type="number" min="1" max="200" value="10" required inputmode="numeric"></div>
+        <div class="field"><label for="lW">Težina (<span class="unitLbl">kg</span>)</label><input id="lW" type="number" min="0" max="1000" step="0.5" value="0" required inputmode="decimal"></div>
+        <div class="field w2">
+          <span class="lbl">Jedinica</span>
+          <div class="seg">
+            <label><input type="radio" name="unit" id="unitKg" value="kg" checked>kg</label>
+            <label><input type="radio" name="unit" id="unitLb" value="lb">lb</label>
+          </div>
+        </div>
+        <div class="field w2"><button class="btn red" type="submit">Dodaj</button></div>
+      </form>
+    </details>
+
+    <details class="card backup">
+      <summary>Rezervna kopija</summary>
+      <div class="backup-body">
+        <div>
+          <p class="muted">Brisanje podataka pregledača briše i dnevnik. Izvezi jednom nedeljno.</p>
+          <div class="btns">
+            <button class="btn" type="button" id="exportBtn">Preuzmi JSON</button>
+            <button class="btn w" type="button" id="copyBtn" style="box-shadow:4px 4px 0 var(--black);outline:2px solid var(--black)">Kopiraj</button>
+          </div>
+          <p class="msg" id="exportMsg" role="status"></p>
+        </div>
+        <div>
+          <input type="file" id="importFile" accept=".json,application/json" aria-label="JSON fajl za uvoz">
+          <div class="btns">
+            <button class="btn" type="button" id="mergeBtn">Spoji</button>
+            <button class="btn red" type="button" id="replaceBtn">Zameni sve</button>
+          </div>
+          <p class="msg" id="importMsg" role="status"></p>
+        </div>
+      </div>
+    </details>
+  </section>
+
+  <!-- =================== SAVETI =================== -->
+  <section data-view="saveti" aria-label="Saveti" hidden>
+    <div class="vh">
+      <h2 class="ransom" data-ransom>Četiri pravila</h2>
+    </div>
+    <div class="rules">
+      <div class="card rule enter"><span class="k">RIR 2–3</span><h3>Rezerva</h3><p>Prve 4 nedelje stani 2–3 ponavljanja pre otkaza.</p></div>
+      <div class="card rule enter" style="--i:1"><span class="k">+KG</span><h3>Progresija</h3><p>Gornja granica u svim serijama? Sledeći put dodaj teg.</p></div>
+      <div class="card rule enter" style="--i:2"><span class="k">10 MIN</span><h3>Zagrevanje</h3><p>Lagani kardio, pa 2 lagane serije prve vežbe.</p></div>
+      <div class="card rule enter" style="--i:3"><span class="k">7–9 H</span><h3>San</h3><p>Mišići rastu dok se odmaraš, ne dok treniraš.</p></div>
+    </div>
+
+    <div class="vh gap">
+      <h2 class="ransom" data-ransom>Zašto ovako</h2>
+    </div>
+    <div class="why">
+      <div class="card enter">
+        <ul>
+          <li>Svaki mišić 2× nedeljno</li>
+          <li>8–15 teških serija nedeljno po mišiću</li>
+          <li>Prvo teške vežbe, pa izolacija</li>
+          <li>Mašine i bučice: lakše se uče, rade isto</li>
+          <li>6–15 ponavljanja, odmor 1–3 min</li>
+        </ul>
+      </div>
+      <div class="card enter" style="--i:1">
+        <span class="tag r">Serija nedeljno po mišiću</span>
+        <div class="table-scroll" style="margin-top:14px">
+          <table class="vol"><tbody id="volBody"></tbody></table>
+        </div>
+        <p class="muted" style="margin-top:12px;font-size:.88rem">Crvena zona: 8–15. Pomoćni rad se računa kao pola serije.</p>
+      </div>
+    </div>
+
+    <div class="vh gap">
+      <h2 class="ransom" data-ransom>Pitanja</h2>
+    </div>
+    <div class="faq">
+      <details class="card">
+        <summary>Da li je dobro trenirati dva puta dnevno?</summary>
+        <div class="a">
+          <p>Za početnika: ne. Mišići rastu dok se oporavljaju, a ovaj program već radi svaki mišić 2× nedeljno. Dupli treninzi donose samo više umora i veći rizik od povrede.</p>
+          <p>Lagan drugi trening je u redu:</p>
+          <ul>
+            <li>šetnja ili lagani bicikl</li>
+            <li>10 min istezanja uveče</li>
+            <li>jedan trening podeljen na dva dela, ako nemaš vremena</li>
+          </ul>
+          <p>Hoćeš više? Posle 8–12 nedelja dodaj peti dan.</p>
+        </div>
+      </details>
+      <details class="card">
+        <summary>Šta ako propustim trening?</summary>
+        <div class="a"><p>Nastavi sledećim po redu. Ne radi dva u jednom danu.</p></div>
+      </details>
+      <details class="card">
+        <summary>Kada ću videti rezultate?</summary>
+        <div class="a"><p>Snaga raste za 2–4 nedelje. U ogledalu se vidi posle 8–12 nedelja.</p></div>
+      </details>
+      <details class="card">
+        <summary>Da li mi trebaju suplementi?</summary>
+        <div class="a"><p>Nisu obavezni. Jedini dobro istražen je kreatin monohidrat, 3–5 g dnevno. Protein u prahu je samo praktična hrana.</p></div>
+      </details>
+      <details class="card">
+        <summary>Boli me mišić posle treninga?</summary>
+        <div class="a"><p>Upala mišića je normalna prvih nedelja. Oštar bol u zglobu nije: stani i uzmi lakšu varijantu.</p></div>
+      </details>
+      <details class="card">
+        <summary>Kada da pređem na šipku?</summary>
+        <div class="a"><p>Posle 8–12 nedelja, kada ti najteža bučica postane laka. Pre toga pogledaj video ili pitaj trenera.</p></div>
+      </details>
+    </div>
+    <footer>„Video tehnike“ otvara YouTube pretragu na engleskom, jer tamo ima najviše dobrih snimaka.</footer>
+  </section>
+</main>
+
+<div class="timer" id="timer" hidden role="timer" aria-live="off">
+  <div><div class="tl" id="timerLabel">Odmor</div><div class="t" id="timerT">1:30</div></div>
+  <div><div class="tl" id="timerNext"></div><div class="tb"><i id="timerBar"></i></div></div>
+  <button type="button" class="btn w" id="timerAdd">+15 s</button>
+  <button type="button" class="btn red" id="timerSkip">Dalje</button>
+</div>
+<div class="swipe" id="swipe" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="splash" id="splash" hidden aria-hidden="true"><div class="band"><b>Trening završen!</b><span id="splashSub"></span></div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(() => {
+"use strict";
+
+/* ================= PROGRAM ================= */
+// step: korak pri povećanju ("upper" 2,5 kg, "lower" 5 kg, "assist" smanjuje pomoć, "none" bez tega)
+// p/s: primarni i pomoćni mišići (za tabelu nedeljnog volumena)
+const EX = {
+  bench: { name: "Potisak bučicama na ravnoj klupi", musc: "Grudi · ramena · triceps", p: ["Grudi"], s: ["Triceps", "Ramena"], step: "upper", range: [6, 10], rest: 150,
+    q: "dumbbell bench press proper form beginner", where: "Ravna klupa + bučice", start: "6–12 kg po ruci", bad: "Laktovi skroz u stranu. Drži ih na 45°.",
+    how: ["Lezi sa bučicama iznad grudi.", "Gurni pravo gore do ispruženih ruku.", "Spuštaj polako do grudi, pa ponovo."] },
+  cablerow: { name: "Veslanje na sajli sedeći", musc: "Srednja leđa · latovi", p: ["Leđa"], s: ["Biceps"], step: "upper", range: [8, 12], rest: 120,
+    q: "seated cable row proper form", where: "Sajla sa V-drškom, sedeći", start: "20–35 kg", bad: "Ljuljanje telom napred-nazad.",
+    how: ["Sedi uspravno, kolena blago savijena.", "Povuci dršku do pupka i skupi lopatice.", "Polako pusti ruke napred."] },
+  ohp: { name: "Potisak bučicama iznad glave", musc: "Ramena · triceps", p: ["Ramena"], s: ["Triceps"], step: "upper", range: [8, 12], rest: 120,
+    q: "seated dumbbell shoulder press form", where: "Klupa sa uspravnim naslonom + bučice", start: "4–10 kg po ruci", bad: "Donja leđa se odvajaju od naslona.",
+    how: ["Sedi uz naslon, bučice u visini ramena.", "Gurni gore do skoro ispruženih ruku.", "Spusti polako do ramena."] },
+  pulldown: { name: "Lat mašina", musc: "Latovi · biceps", p: ["Leđa"], s: ["Biceps"], step: "upper", range: [8, 12], rest: 120,
+    q: "lat pulldown proper form", where: "Sajla sa dugom šipkom i jastukom za kolena", start: "20–35 kg", bad: "Zabacivanje celim telom.",
+    how: ["Fiksiraj butine, uhvati šipku malo šire od ramena.", "Povuci do gornjeg dela grudi, laktovi ka dole.", "Polako pusti gore."] },
+  lateral: { name: "Odručenje bučicama", musc: "Bočna ramena", p: ["Ramena"], s: [], step: "upper", range: [12, 20], rest: 60,
+    q: "dumbbell lateral raise proper form", where: "Bučice, stojeći", start: "2–6 kg (treba da je lagano)", bad: "Pretežak teg i sleganje ramenima.",
+    how: ["Stani sa bučicama pored tela.", "Podigni ruke u stranu do visine ramena.", "Spuštaj polako, 2 sekunde."] },
+  pushdown: { name: "Triceps na sajli", musc: "Triceps", p: ["Triceps"], s: [], step: "upper", range: [10, 15], rest: 60,
+    q: "cable tricep pushdown form", where: "Sajla sa koturom gore + uže", start: "10–20 kg", bad: "Laktovi idu napred.",
+    how: ["Laktovi uz telo, uhvati uže.", "Gurni nadole do potpuno pravih ruku.", "Vrati do grudi, laktovi mirni."] },
+
+  goblet: { name: "Goblet čučanj", musc: "Prednja loža · gluteus", p: ["Prednja loža"], s: ["Gluteus"], step: "lower", range: [8, 12], rest: 150,
+    q: "goblet squat proper form beginner", where: "Jedna bučica", start: "8–16 kg", bad: "Pete se odižu ili kolena beže unutra.",
+    how: ["Drži bučicu uz grudi, stopala u širini ramena.", "Sedi između peta dok butine ne budu paralelne sa podom.", "Gurni celim stopalom i ustani."] },
+  rdl: { name: "Rumunsko mrtvo dizanje", musc: "Zadnja loža · gluteus", p: ["Zadnja loža", "Gluteus"], s: [], step: "lower", range: [8, 12], rest: 120,
+    q: "dumbbell romanian deadlift form", where: "Dve bučice", start: "8–14 kg po ruci", bad: "Kriva leđa ili savijanje kolena kao u čučnju.",
+    how: ["Stani sa bučicama ispred butina.", "Gurni kukove unazad dok ne osetiš istezanje zadnje lože.", "Stegni gluteus i ispravi se."] },
+  legpress: { name: "Nožna presa", musc: "Prednja loža · gluteus", p: ["Prednja loža"], s: ["Gluteus"], step: "lower", range: [10, 15], rest: 120,
+    q: "leg press proper form", where: "Mašina sa velikom platformom", start: "Po 10–20 kg sa svake strane", bad: "Donja leđa se odvajaju od sedišta.",
+    how: ["Leđa uz naslon, stopala na sredini platforme.", "Spuštaj dok kolena ne budu pod 90°.", "Gurni nazad bez zaključavanja kolena."] },
+  seatedcurl: { name: "Pregib nogu sedeći", musc: "Zadnja loža", p: ["Zadnja loža"], s: [], step: "upper", range: [10, 15], rest: 75,
+    q: "seated leg curl machine form", where: "Mašina za pregib nogu, sedeći", start: "15–30 kg", bad: "Trzavo vraćanje tega.",
+    how: ["Kolena u liniji sa osovinom mašine.", "Povuci pete nadole i unazad.", "Vraćaj polako, 2–3 sekunde."] },
+  calf: { name: "Podizanje na prste", musc: "Listovi", p: ["Listovi"], s: [], step: "upper", range: [10, 15], rest: 60,
+    q: "standing calf raise proper form", where: "Mašina za listove ili stepenik", start: "Bez tega ili 20–40 kg", bad: "Odskakivanje.",
+    how: ["Prednji deo stopala na ivici.", "Spusti pete do punog istezanja.", "Podigni se visoko na prste i zadrži."] },
+  plank: { name: "Plank", musc: "Trup", p: ["Trbuh"], s: [], step: "none", range: [30, 60], rest: 60, secs: true,
+    q: "plank proper form", where: "Pod ili prostirka", start: "30 s, ili sa kolenima na podu", bad: "Kukovi propadaju ili su visoko.",
+    how: ["Podlaktice na podu, laktovi ispod ramena.", "Stegni gluteus i trbuh.", "Drži pravu liniju i diši."] },
+
+  assisted: { name: "Zgibovi uz pomoć mašine", musc: "Latovi · biceps", p: ["Leđa"], s: ["Biceps"], step: "assist", range: [6, 10], rest: 150,
+    q: "assisted pull up machine form", where: "Mašina za asistirane zgibove", start: "Pomoć ≈ pola tvoje težine", bad: "Pola ponavljanja.",
+    how: ["Klekni na platformu, uhvati ručke šire od ramena.", "Povuci se dok brada ne pređe ručke.", "Spusti se do ispruženih ruku."] },
+  incline: { name: "Kosi potisak bučicama", musc: "Gornje grudi · ramena", p: ["Grudi"], s: ["Ramena", "Triceps"], step: "upper", range: [8, 12], rest: 120,
+    q: "incline dumbbell press proper form", where: "Klupa na 30° + bučice", start: "6–10 kg po ruci", bad: "Klupa previše uspravna.",
+    how: ["Klupa na 2. ili 3. zarez, lezi.", "Gurni gore iznad gornjeg dela grudi.", "Spuštaj polako, laktovi na 45°."] },
+  dbrow: { name: "Veslanje bučicama na klupi", musc: "Gornja leđa · latovi", p: ["Leđa"], s: ["Biceps"], step: "upper", range: [8, 12], rest: 120,
+    q: "chest supported dumbbell row form", where: "Kosa klupa + bučice", start: "6–12 kg po ruci", bad: "Odizanje grudi sa klupe.",
+    how: ["Lezi grudima na kosu klupu.", "Povuci bučice, laktovi ka kukovima.", "Spusti do ispruženih ruku."] },
+  pecdeck: { name: "Leptir mašina", musc: "Grudi", p: ["Grudi"], s: [], step: "upper", range: [10, 15], rest: 60,
+    q: "pec deck machine fly form", where: "Pec deck mašina", start: "15–30 kg", bad: "Ramena idu napred.",
+    how: ["Ručke u visini grudi, leđa uz naslon.", "Spoji ruke ispred grudi u širokom luku.", "Vraćaj polako do istezanja."] },
+  curl: { name: "Pregib za biceps", musc: "Biceps", p: ["Biceps"], s: [], step: "upper", range: [8, 12], rest: 60,
+    q: "dumbbell bicep curl proper form", where: "Bučice", start: "5–10 kg po ruci", bad: "Zamahivanje telom.",
+    how: ["Bučice pored tela, dlanovi napred.", "Savij samo u laktu.", "Spuštaj polako."] },
+  ohext: { name: "Triceps iznad glave", musc: "Triceps", p: ["Triceps"], s: [], step: "upper", range: [10, 15], rest: 60,
+    q: "overhead cable tricep extension form", where: "Sajla nisko + uže", start: "7–15 kg", bad: "Laktovi se šire.",
+    how: ["Leđima ka mašini, šake iza glave.", "Ispruži ruke napred i gore.", "Vrati polako do istezanja."] },
+
+  deadlift: { name: "Mrtvo dizanje, trap šipka", musc: "Gluteus · zadnja loža · leđa", p: ["Gluteus", "Zadnja loža"], s: ["Prednja loža", "Leđa"], step: "lower", range: [5, 8], rest: 180,
+    q: "trap bar deadlift form beginner", where: "Trap (šestougaona) šipka", start: "Prazna šipka + mali tegovi", bad: "Zaobljena leđa. Tada je teg pretežak.",
+    how: ["Stani u šipku, kukovi dole, leđa ravna.", "Gurni pod i ustani uspravno.", "Spusti gurajući kukove unazad."] },
+  split: { name: "Bugarski čučanj", musc: "Prednja loža · gluteus", p: ["Prednja loža", "Gluteus"], s: [], step: "upper", range: [8, 12], rest: 90,
+    q: "bulgarian split squat proper form", where: "Klupa (+ bučice)", start: "Bez tega 2 nedelje, pa 4–10 kg", bad: "Prednje stopalo preblizu klupe.",
+    how: ["Zadnje stopalo na klupu, veliki korak napred.", "Spusti zadnje koleno pravo dole.", "Gurni kroz prednju petu. Pa druga noga."] },
+  hipthrust: { name: "Hip thrust", musc: "Gluteus", p: ["Gluteus"], s: [], step: "lower", range: [8, 12], rest: 120,
+    q: "barbell hip thrust form beginner", where: "Klupa + šipka sa jastukom", start: "Prazna šipka (20 kg)", bad: "Izvijanje donjih leđa.",
+    how: ["Leđa na klupu, šipka preko kukova.", "Podigni kukove do ravne linije.", "Stegni gluteus 1 s, pa spusti."] },
+  legext: { name: "Ekstenzija nogu", musc: "Prednja loža", p: ["Prednja loža"], s: [], step: "upper", range: [10, 15], rest: 75,
+    q: "leg extension machine form", where: "Mašina za ekstenziju nogu", start: "15–30 kg", bad: "Izbacivanje tega zamahom.",
+    how: ["Kolena u liniji sa osovinom.", "Ispruži noge i stegni 1 s.", "Spuštaj polako."] },
+};
+
+const DAYS = [
+  { dn: "Pon", full: "Ponedeljak", title: "Gornji A", focus: "Grudi i ramena",
+    ex: [["bench", 3], ["cablerow", 3], ["pulldown", 3], ["ohp", 2], ["lateral", 3], ["pushdown", 2]] },
+  { dn: "Uto", full: "Utorak", title: "Donji A", focus: "Čučanj i prednja loža",
+    ex: [["goblet", 3], ["rdl", 3], ["legpress", 3], ["seatedcurl", 3], ["calf", 3], ["plank", 2]] },
+  { dn: "Sre", full: "Sreda", title: "Odmor", focus: "Šetnja i istezanje",
+    items: ["20–30 min brzog hoda", "10 min istezanja", "7.000–10.000 koraka"] },
+  { dn: "Čet", full: "Četvrtak", title: "Gornji B", focus: "Leđa i ruke",
+    ex: [["assisted", 3], ["incline", 3], ["dbrow", 3], ["pecdeck", 2], ["lateral", 2], ["curl", 3], ["ohext", 2]] },
+  { dn: "Pet", full: "Petak", title: "Donji B", focus: "Zadnja loža i gluteus",
+    ex: [["deadlift", 3], ["split", 3], ["hipthrust", 3], ["legext", 3], ["seatedcurl", 2], ["calf", 3]] },
+  { dn: "Sub", full: "Subota", title: "Po želji", focus: "Kardio ili sport",
+    items: ["30–45 min sporta po izboru", "Ili 20 min hoda uzbrdo na traci", "Nema snage? Preskoči."] },
+  { dn: "Ned", full: "Nedelja", title: "Odmor", focus: "Potpuni oporavak",
+    items: ["Bez treninga", "Spavaj i jedi dobro", "Napravi rezervnu kopiju dnevnika"] },
+];
+
+/* ================= POMOĆNE ================= */
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const LOC = "sr-Latn-RS";
+const nf0 = new Intl.NumberFormat(LOC, { maximumFractionDigits: 0 });
+const nf1 = new Intl.NumberFormat(LOC, { maximumFractionDigits: 1 });
+const fmt = n => nf0.format(Math.round(n) || 0);
+const fmt1 = n => nf1.format(Math.round(n * 10) / 10 || 0);
+const isoOf = d => { const x = new Date(d); x.setMinutes(x.getMinutes() - x.getTimezoneOffset()); return x.toISOString().slice(0, 10); };
+const todayISO = () => isoOf(new Date());
+const dateLong = iso => new Date(iso + "T12:00:00").toLocaleDateString(LOC, { weekday: "long", day: "numeric", month: "long" });
+const dateShort = iso => new Date(iso + "T12:00:00").toLocaleDateString(LOC, { day: "numeric", month: "short" });
+const toKg = (w, u) => u === "lb" ? w * 0.4536 : w;
+const fromKg = (w, u) => u === "lb" ? w / 0.4536 : w;
+const ytUrl = q => "https://www.youtube.com/results?search_query=" + encodeURIComponent(q);
+const mmss = s => `${Math.floor(s / 60)}:${String(Math.max(0, s) % 60).padStart(2, "0")}`;
+// srpska množina: 1 jaje, 2–4 jajeta, 5+ jaja
+const plural = (n, [one, few, many]) => (n % 10 === 1 && n % 100 !== 11) ? one : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? few : many;
+const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const store = {
+  get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} },
+};
+function toast(msg) { const t = $("toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("show"), 2400); }
+function clampInt(v, lo, hi) { v = Math.round(+v); return Number.isFinite(v) ? Math.min(hi, Math.max(lo, v)) : lo; }
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+
+// naslov od "isečenih" slova, uvek isti raspored za isti tekst
+function ransom(el) {
+  const text = el.textContent.trim();
+  let h = 7;
+  el.innerHTML = `<span class="sr">${esc(text)}</span>` + text.split(/\s+/).map(w => `<span class="rw" aria-hidden="true">${[...w].map((ch, i) => {
+    h = (h * 31 + ch.charCodeAt(0) + i * 7) % 1009;
+    const s = i === 0 ? 2 - (h % 2) * 2 : h % 4, r = ((h % 9) - 4) * 1.3;
+    return `<span class="rl s${s}" style="--r:${r.toFixed(1)}deg">${esc(ch)}</span>`;
+  }).join("")}</span>`).join(" ");
+}
+
+/* ================= STANJE ================= */
+const KEY = "firstPlates.v1";
+const defaults = () => ({ app: "teg-po-teg", version: 1, unit: "kg", profile: { sex: "m", age: 22, height: 178, weight: 75, activity: 1.55, goal: 0 }, logs: [] });
+function sanitize(d) {
+  if (!d || typeof d !== "object" || !Array.isArray(d.logs)) return null;
+  const out = defaults();
+  if (d.unit === "lb" || d.unit === "kg") out.unit = d.unit;
+  if (d.profile && typeof d.profile === "object") {
+    const p = d.profile;
+    if (p.sex === "m" || p.sex === "f") out.profile.sex = p.sex;
+    for (const k of ["age", "height", "weight", "activity", "goal"]) if (Number.isFinite(+p[k])) out.profile[k] = +p[k];
+  }
+  out.logs = d.logs.filter(l => l && /^\d{4}-\d{2}-\d{2}$/.test(l.date) && typeof l.exercise === "string" && l.exercise.trim())
+    .map(l => ({
+      id: String(l.id || uid()), date: l.date, exercise: l.exercise.trim().slice(0, 60),
+      sets: clampInt(l.sets, 1, 50), reps: clampInt(l.reps, 1, 500), weight: Math.max(0, +l.weight || 0),
+      unit: l.unit === "lb" ? "lb" : "kg", notes: typeof l.notes === "string" ? l.notes.slice(0, 200) : ""
+    }));
+  return out;
+}
+let state = sanitize(store.get(KEY)) || defaults();
+const save = () => store.set(KEY, state);
+const ui = Object.assign({ view: "trening", menu: 0, chartEx: "" }, store.get(KEY + ".ui") || {});
+const saveUi = () => store.set(KEY + ".ui", ui);
+// nacrt današnjeg treninga: { date, days: { [dan]: { [vežba]: { w, r, done: [bool] } } } }
+let draft = store.get(KEY + ".draft");
+if (!draft || draft.date !== todayISO() || typeof draft.days !== "object") draft = { date: todayISO(), days: {} };
+const saveDraft = () => store.set(KEY + ".draft", draft);
+
+/* ================= KARTICE ================= */
+const VIEWS = ["trening", "ishrana", "dnevnik", "saveti"];
+function applyView(v) {
+  ui.view = v; saveUi();
+  document.querySelectorAll("main > section[data-view]").forEach(s => {
+    s.hidden = s.dataset.view !== v;
+    // ponovo pokreni ulazne animacije u prikazanoj kartici
+    if (!s.hidden) s.querySelectorAll(".enter").forEach(el => { el.style.animation = "none"; void el.offsetWidth; el.style.animation = ""; });
+  });
+  document.querySelectorAll(".tab").forEach(b => b.dataset.view === v ? b.setAttribute("aria-current", "page") : b.removeAttribute("aria-current"));
+  try { history.replaceState(null, "", "#" + v); } catch (e) {}
+  if (v === "dnevnik") renderChart();
+  window.scrollTo({ top: 0 });
+}
+function showView(v, animate) {
+  if (!VIEWS.includes(v)) v = "trening";
+  if (!animate || reduced() || v === ui.view) return applyView(v);
+  const sw = $("swipe");
+  sw.classList.remove("run"); void sw.offsetWidth; sw.classList.add("run");
+  setTimeout(() => applyView(v), 300);
+  setTimeout(() => sw.classList.remove("run"), 760);
+}
+document.querySelector(".tabs").addEventListener("click", e => { const b = e.target.closest(".tab"); if (b) showView(b.dataset.view, true); });
+
+/* ---------- boja teme ---------- */
+const ACCENTS = ["red", "blue", "yellow"];
+function applyAccent(a) {
+  ui.accent = ACCENTS.includes(a) ? a : "red"; saveUi();
+  document.documentElement.dataset.accent = ui.accent;
+  document.querySelectorAll(".acc").forEach(b => b.setAttribute("aria-pressed", b.dataset.accent === ui.accent));
+}
+document.querySelector(".accents").addEventListener("click", e => {
+  const b = e.target.closest(".acc"); if (!b || b.dataset.accent === ui.accent) return;
+  if (reduced()) return applyAccent(b.dataset.accent);
+  const sw = $("swipe");
+  sw.classList.remove("run"); void sw.offsetWidth; sw.classList.add("run");
+  setTimeout(() => applyAccent(b.dataset.accent), 300);
+  setTimeout(() => sw.classList.remove("run"), 760);
+});
+
+/* ================= TRENING ================= */
+const todayIdx = (new Date().getDay() + 6) % 7; // pon = 0
+let selDay = todayIdx;
+
+function lastFor(name) {
+  return state.logs.filter(l => l.exercise === name).sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id))[0];
+}
+// predlog za danas na osnovu poslednjeg unosa
+function advise(k, u) {
+  const e = EX[k], last = lastFor(e.name);
+  if (!last) return { w: "", r: e.range[0], up: false, html: e.step === "none" ? `Prvi put? Cilj: <b>${e.range[0]}–${e.range[1]} s</b>.` : `Prvi put? Počni sa <b>${esc(e.start)}</b>.` };
+  const lw = Math.round(fromKg(toKg(last.weight, last.unit), u) * 2) / 2;
+  if (e.step === "none") {
+    const nr = Math.min(last.reps + 5, e.range[1]);
+    return { w: 0, r: nr, up: false, html: `Prošli put ${last.reps} s. Danas: <b>${nr} s</b>.` };
+  }
+  const prev = `Prošli put ${last.sets}×${last.reps} @ ${fmt1(lw)} ${u}.`;
+  if (last.reps >= e.range[1]) {
+    const inc = e.step === "lower" ? (u === "kg" ? 5 : 10) : (u === "kg" ? 2.5 : 5);
+    const next = e.step === "assist" ? Math.max(0, lw - inc) : lw + inc;
+    return { w: next, r: e.range[0], up: true, html: `${prev} Nivo gore! <b>${e.step === "assist" ? "Pomoć " : ""}${fmt1(next)} ${u}</b>, od ${e.range[0]} pon.` };
+  }
+  const nr = Math.min(last.reps + 1, e.range[1]);
+  return { w: lw, r: nr, up: false, html: `${prev} Danas: <b>${nr}+ pon.</b>` };
+}
+
+function dayDraft(i) {
+  const d = DAYS[i];
+  if (!d.ex) return null;
+  draft.days[i] = draft.days[i] || {};
+  for (const [k, s] of d.ex) {
+    const cur = draft.days[i][k];
+    if (!cur || !Array.isArray(cur.done) || cur.done.length !== s) {
+      const a = advise(k, state.unit);
+      draft.days[i][k] = { w: a.w, r: a.r, done: Array(s).fill(false) };
+    }
+  }
+  return draft.days[i];
+}
+function dayProgress(i) {
+  const dd = dayDraft(i); if (!dd) return null;
+  let done = 0, total = 0;
+  for (const [k, s] of DAYS[i].ex) { total += s; done += dd[k].done.filter(Boolean).length; }
+  return { done, total };
+}
+
+function renderHero() {
+  const d = DAYS[selDay], isToday = selDay === todayIdx;
+  const star = `<div class="hero-star" aria-hidden="true"><b>${d.dn.toUpperCase()}</b></div>`;
+  const head = `<span class="tag">${isToday ? "Danas" : "Izabrano"} · ${d.full}</span><h1>${esc(d.title)}</h1><p class="focus">${esc(d.focus)}</p>`;
+  if (!d.ex) { $("hero").innerHTML = `<div>${head}<div class="meta"><span class="chip">Bez tegova</span></div></div>${star}`; return; }
+  const pr = dayProgress(selDay), pct = pr.total ? Math.round(pr.done / pr.total * 100) : 0;
+  $("hero").innerHTML = `<div>${head}
+      <div class="meta"><span class="chip">${d.ex.length} vežbi</span><span class="chip">${pr.total} serija</span><span class="chip">~${Math.round(pr.total * 2.6 + 10)} min</span></div>
+      <div class="progress"><div class="lab"><span id="progTxt">${pr.done} / ${pr.total}</span><span id="progPct">${pct}%</span></div><div class="track"><div class="fill" id="progFill" style="width:${pct}%"></div></div></div>
+    </div>${star}`;
+}
+function updateProgress() {
+  const pr = dayProgress(selDay); if (!pr) return;
+  const pct = pr.total ? Math.round(pr.done / pr.total * 100) : 0;
+  $("progTxt").textContent = `${pr.done} / ${pr.total}`; $("progPct").textContent = pct + "%"; $("progFill").style.width = pct + "%";
+  $("finishTxt").textContent = `${pr.done} / ${pr.total} serija`; $("finishBtn").disabled = !pr.done;
+}
+
+function renderWeek() {
+  $("week").innerHTML = DAYS.map((d, i) => `
+    <button class="day${d.ex ? "" : " rest"}" type="button" data-i="${i}" aria-pressed="${i === selDay}" aria-label="${d.full}: ${esc(d.title)}">
+      ${i === todayIdx ? '<span class="now" title="Danas"></span>' : ""}
+      <span class="dn">${d.dn}</span><span class="df">${esc(d.title)}</span>
+    </button>`).join("");
+}
+
+function exCard(k, s, i, dd) {
+  const e = EX[k], it = dd[k], u = state.unit, a = advise(k, u);
+  const wUnit = e.step === "assist" ? `pomoć ${u}` : u;
+  const weight = e.step === "none" ? "" : `
+    <div class="stepper">
+      <button type="button" data-act="w-" aria-label="Manje težine">−</button>
+      <label><input type="number" id="w-${k}" data-f="w" step="0.5" min="0" inputmode="decimal" value="${it.w}" placeholder="0" aria-label="Težina"><span class="u">${wUnit}</span></label>
+      <button type="button" data-act="w+" aria-label="Više težine">+</button>
+    </div>`;
+  return `<article class="card exc enter${it.done.every(Boolean) ? " complete" : ""}" data-k="${k}" style="--i:${i + 1}">
+    <div class="exc-top">
+      <span class="ord">${i + 1}</span>
+      <div><h3>${esc(e.name)}</h3><p class="musc">${esc(e.musc)}</p></div>
+      <div class="rx"><b>${s} × ${e.range[0]}–${e.range[1]}${e.secs ? " s" : ""}</b><small>odmor ${mmss(e.rest)}</small></div>
+    </div>
+    <div class="exc-work">
+      ${weight}
+      <div class="stepper">
+        <button type="button" data-act="r-" aria-label="Manje">−</button>
+        <label><input type="number" id="r-${k}" data-f="r" min="1" max="200" inputmode="numeric" value="${it.r}" aria-label="${e.secs ? "Sekundi" : "Ponavljanja"}"><span class="u">${e.secs ? "sek" : "pon"}</span></label>
+        <button type="button" data-act="r+" aria-label="Više">+</button>
+      </div>
+      <div class="sets" role="group" aria-label="Serije">
+        ${it.done.map((dn, j) => `<button type="button" class="set" data-set="${j}" aria-pressed="${dn}" aria-label="Serija ${j + 1}"><span>${j + 1}</span></button>`).join("")}
+      </div>
+    </div>
+    <p class="hint${a.up ? " up" : ""}">${a.html}</p>
+    <div class="exc-foot">
+      <a class="link play" href="${ytUrl(e.q)}" target="_blank" rel="noopener">Video tehnike</a>
+      <details class="how">
+        <summary>Kako se radi</summary>
+        <div class="how-body">
+          <ol>${e.how.map(t => `<li>${esc(t)}</li>`).join("")}</ol>
+          <dl>
+            <div><dt>Gde</dt><dd>${esc(e.where)}</dd></div>
+            <div><dt>Početak</dt><dd>${esc(e.start)}</dd></div>
+            <div><dt>Izbegavaj</dt><dd class="bad">${esc(e.bad)}</dd></div>
+          </dl>
+        </div>
+      </details>
+    </div>
+  </article>`;
+}
+
+function renderSession() {
+  const d = DAYS[selDay];
+  if (!d.ex) {
+    $("session").innerHTML = `<div class="card rest-card enter"><span class="tag r">Plan za ovaj dan</span><ul>${d.items.map(t => `<li>${esc(t)}</li>`).join("")}</ul></div>`;
+    return;
+  }
+  const dd = dayDraft(selDay), pr = dayProgress(selDay);
+  $("session").innerHTML = `
+    <div class="card warm enter"><span class="ord">0</span><div><h3>Zagrevanje · 10 min</h3><p class="muted">5 min bicikl ili traka, pa 2 lagane serije prve vežbe.</p></div></div>
+    ${d.ex.map(([k, s], i) => exCard(k, s, i, dd)).join("")}
+    <div class="finish enter" style="--i:${d.ex.length + 1}">
+      <div><span class="tag w">Kraj treninga</span><strong id="finishTxt">${pr.done} / ${pr.total} serija</strong></div>
+      <button class="btn red" type="button" id="finishBtn" ${pr.done ? "" : "disabled"}>Sačuvaj trening</button>
+    </div>`;
+  saveDraft();
+}
+
+$("week").addEventListener("click", e => {
+  const b = e.target.closest(".day"); if (!b) return;
+  selDay = +b.dataset.i; renderWeek(); renderHero(); renderSession();
+});
+
+$("session").addEventListener("click", e => {
+  if (e.target.closest("#finishBtn")) return finishWorkout();
+  const card = e.target.closest(".exc[data-k]"); if (!card) return;
+  const k = card.dataset.k, ex = EX[k], it = draft.days[selDay][k];
+  const act = e.target.closest("[data-act]");
+  if (act) {
+    const a = act.dataset.act, u = state.unit;
+    if (a[0] === "w") {
+      const stepW = ex.step === "lower" ? (u === "kg" ? 2.5 : 5) : (u === "kg" ? 1 : 2.5);
+      it.w = Math.max(0, Math.round(((+it.w || 0) + (a[1] === "+" ? stepW : -stepW)) * 2) / 2);
+      $("w-" + k).value = it.w;
+    } else {
+      it.r = Math.max(1, (+it.r || 0) + (a[1] === "+" ? 1 : -1) * (ex.secs ? 5 : 1));
+      $("r-" + k).value = it.r;
+    }
+    saveDraft(); return;
+  }
+  const setBtn = e.target.closest("[data-set]");
+  if (setBtn) {
+    const j = +setBtn.dataset.set;
+    it.done[j] = !it.done[j];
+    setBtn.setAttribute("aria-pressed", it.done[j]);
+    setBtn.classList.remove("pop");
+    if (it.done[j]) { void setBtn.offsetWidth; setBtn.classList.add("pop"); }
+    card.classList.toggle("complete", it.done.every(Boolean));
+    saveDraft(); updateProgress();
+    if (it.done[j]) {
+      const pr = dayProgress(selDay);
+      if (pr.done === pr.total) { stopTimer(); toast("Sve serije urađene!"); }
+      else startTimer(ex.rest, it.done.every(Boolean) ? "sledeća vežba" : `serija ${it.done.filter(Boolean).length + 1}`);
+    }
+  }
+});
+$("session").addEventListener("input", e => {
+  const inp = e.target.closest("input[data-f]"); if (!inp) return;
+  draft.days[selDay][inp.closest(".exc").dataset.k][inp.dataset.f] = inp.value === "" ? "" : +inp.value;
+  saveDraft();
+});
+
+function splash(sub) {
+  if (reduced()) return;
+  const s = $("splash"); $("splashSub").textContent = sub;
+  s.hidden = false; s.classList.remove("run"); void s.offsetWidth; s.classList.add("run");
+  clearTimeout(splash.t); splash.t = setTimeout(() => { s.hidden = true; s.classList.remove("run"); }, 2000);
+}
+function finishWorkout() {
+  const d = DAYS[selDay], dd = draft.days[selDay], date = todayISO();
+  let n = 0;
+  for (const [k] of d.ex) {
+    const it = dd[k], sets = it.done.filter(Boolean).length;
+    if (!sets) continue;
+    state.logs.push({ id: uid(), date, exercise: EX[k].name, sets, reps: clampInt(it.r, 1, 500), weight: Math.max(0, +it.w || 0), unit: state.unit, notes: "" });
+    n++;
+  }
+  if (!n) return;
+  save(); delete draft.days[selDay]; saveDraft(); stopTimer();
+  refreshLog(); renderHero(); renderSession();
+  const msg = `${n} ${plural(n, ["vežba", "vežbe", "vežbi"])} u dnevniku`;
+  splash(msg); toast(msg);
+}
+
+/* ---------- tajmer za odmor ---------- */
+let timer = null, audioCtx = null;
+function beep() {
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    [0, 0.22].forEach(off => {
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.frequency.value = 880; o.connect(g); g.connect(audioCtx.destination);
+      const t0 = audioCtx.currentTime + off;
+      g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.25, t0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.18);
+      o.start(t0); o.stop(t0 + 0.2);
+    });
+  } catch (e) {}
+  try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch (e) {}
+}
+function startTimer(secs, next) {
+  try { audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
+  if (timer) { clearInterval(timer.iv); clearTimeout(timer.hide); }
+  timer = { end: Date.now() + secs * 1000, total: secs, next };
+  const el = $("timer"); el.hidden = false; el.classList.remove("go");
+  $("timerLabel").textContent = "Odmor"; $("timerNext").textContent = "Zatim: " + next;
+  const tick = () => {
+    const left = Math.ceil((timer.end - Date.now()) / 1000);
+    if (left <= 0) {
+      clearInterval(timer.iv); beep();
+      el.classList.add("go"); $("timerLabel").textContent = "Vreme je"; $("timerT").textContent = "Kreni!"; $("timerBar").style.width = "0%";
+      timer.hide = setTimeout(stopTimer, 6000);
+      return;
+    }
+    $("timerT").textContent = mmss(left);
+    $("timerBar").style.width = (left / timer.total * 100).toFixed(1) + "%";
+  };
+  tick(); timer.iv = setInterval(tick, 250);
+}
+function stopTimer() { if (timer) { clearInterval(timer.iv); clearTimeout(timer.hide); } timer = null; $("timer").hidden = true; }
+$("timerAdd").addEventListener("click", () => {
+  if (!timer) return;
+  if ($("timer").classList.contains("go")) { startTimer(15, timer.next); return; }
+  timer.end += 15000; timer.total += 15;
+});
+$("timerSkip").addEventListener("click", stopTimer);
+
+/* ================= ISHRANA ================= */
+let goals = null;
+function calc() {
+  const p = state.profile;
+  const bmr = 10 * p.weight + 6.25 * p.height - 5 * p.age + (p.sex === "m" ? 5 : -161);
+  const tdee = bmr * p.activity;
+  const target = Math.round((tdee + p.goal) / 10) * 10;
+  const protein = p.weight * 1.8, fat = target * 0.25 / 9;
+  const carbs = Math.max(0, (target - protein * 4 - fat * 9) / 4);
+  $("kcal").innerHTML = `${fmt(target)}<small>kcal / dan</small>`;
+  $("goalLine").textContent = p.goal < 0 ? "≈ 0,5 kg masti manje nedeljno." : p.goal > 0 ? "≈ 1 kg više mesečno, uglavnom mišići." : "Malo manje masti, malo više mišića.";
+  $("bmr").textContent = fmt(bmr); $("tdee").textContent = fmt(tdee); $("water").textContent = fmt1(p.weight * 0.035) + " l";
+  const m = [["Proteini", protein, 4, "var(--accent)"], ["UH", carbs, 4, "var(--cream)"], ["Masti", fat, 9, "var(--gray-l)"]];
+  $("macroBar").innerHTML = m.map(([, g, k, c], i) => `<i style="width:${(g * k / target * 100).toFixed(1)}%;background:${c};animation-delay:${i * 120}ms"></i>`).join("");
+  $("macroRows").innerHTML = m.map(([n, g, , c]) => `<div><span class="lbl" style="color:var(--mist2)"><span class="sw" style="background:${c}"></span>${n}</span><span class="g">${fmt(g)} g</span></div>`).join("");
+  $("bxK").textContent = `Ti: ${fmt(target)} kcal`;
+  $("bxP").textContent = `Ti: ${fmt(protein)} g`;
+  $("bxC").textContent = `Ti: ~${fmt(carbs)} g`;
+  $("bxF").textContent = `Ti: ~${fmt(fat)} g`;
+  goals = { kcal: target, p: protein, c: carbs, f: fat };
+  renderMeals();
+}
+function loadProfileInputs() {
+  const p = state.profile;
+  $(p.sex === "f" ? "sexF" : "sexM").checked = true;
+  $("age").value = p.age; $("height").value = p.height; $("bw").value = p.weight;
+  $("activity").value = String(p.activity);
+  const g = document.querySelector(`input[name=goal][value="${p.goal}"]`); if (g) g.checked = true;
+}
+$("calForm").addEventListener("input", () => {
+  const p = state.profile, n = (id, lo, hi, fb) => { const v = +$(id).value; return v >= lo && v <= hi ? v : fb; };
+  p.sex = document.querySelector("input[name=sex]:checked").value;
+  p.age = n("age", 14, 90, p.age); p.height = n("height", 120, 230, p.height); p.weight = n("bw", 35, 250, p.weight);
+  p.activity = +$("activity").value; p.goal = +document.querySelector("input[name=goal]:checked").value;
+  save(); calc();
+});
+$("calForm").addEventListener("submit", e => e.preventDefault());
+
+// na 100 g (ili 100 ml): kcal, proteini, UH, masti; opciono jedinica [jednina, 2–4, 5+, grama po komadu]
+const FOOD = {
+  oats:    ["Ovsene pahuljice (suve)", 379, 13.2, 67.7, 6.5],
+  milk:    ["Mleko 1,5%", 47, 3.4, 4.8, 1.5, null, "ml"],
+  banana:  ["Banana", 89, 1.1, 22.8, 0.3],
+  whey:    ["Protein u prahu", 380, 78, 8, 6, ["merica", "merice", "merica", 30]],
+  egg:     ["Jaja", 143, 12.6, 0.7, 9.5, ["jaje", "jajeta", "jaja", 50]],
+  bread:   ["Integralni hleb", 247, 13, 41, 3.4, ["kriška", "kriške", "krišaka", 40]],
+  chicken: ["Pileći file (sirov)", 120, 22.5, 0, 2.6],
+  rice:    ["Pirinač (suv)", 360, 7, 79, 0.6],
+  oil:     ["Maslinovo ulje", 884, 0, 0, 100],
+  broccoli:["Brokoli", 34, 2.8, 7, 0.4],
+  yogurt:  ["Grčki jogurt 2%", 73, 10, 4, 2],
+  berries: ["Bobičasto voće", 50, 0.7, 12, 0.3],
+  almonds: ["Bademi", 579, 21, 22, 50],
+  apple:   ["Jabuka", 52, 0.3, 14, 0.2],
+  salmon:  ["Losos (sirov)", 208, 20, 0, 13],
+  potato:  ["Krompir (sirov)", 77, 2, 17, 0.1],
+  pasta:   ["Testenina (suva)", 371, 13, 75, 1.5],
+  beef:    ["Mlevena junetina 5%", 137, 21, 0, 5.5],
+  passata: ["Pasirani paradajz", 30, 1.4, 5, 0.2],
+  tuna:    ["Tunjevina (oceđena)", 116, 26, 0, 0.8],
+  cottage: ["Sitni sir (cottage)", 82, 11, 3.5, 2.3],
+  pb:      ["Puter od kikirikija", 588, 25, 20, 50],
+  wrap:    ["Integralna tortilja", 310, 8, 52, 7.5, ["tortilja", "tortilje", "tortilja", 60]],
+  salad:   ["Salata", 20, 1, 3.5, 0.2],
+};
+const PROTEIN_FOODS = new Set(["whey", "egg", "chicken", "yogurt", "salmon", "beef", "tuna", "cottage"]); // prate telesnu težinu
+const FIXED_FOODS = new Set(["broccoli", "salad", "passata"]);                                            // povrće ostaje isto
+
+const MENUS = [
+  { name: "Dan A · Piletina", meals: [
+    ["Doručak", "Proteinska ovsena kaša", [["oats", 80], ["milk", 250], ["banana", 120], ["whey", 30]], "Kuvaj pahuljice u mleku 2–3 min. Skloni sa vatre, umešaj protein, dodaj bananu."],
+    ["Ručak", "Piletina, pirinač, brokoli", [["chicken", 180], ["rice", 90], ["broccoli", 150], ["oil", 10]], "Začini piletinu i peci na ulju 6–7 min po strani. Pirinač 12–15 min, brokoli na pari. Skuvaj za dva dana."],
+    ["Užina", "Činija jogurta", [["yogurt", 250], ["berries", 100], ["almonds", 20]], "Sve pomešaj. Odlično 1–2 sata pre treninga."],
+    ["Večera", "Kajgana i salata", [["egg", 150], ["bread", 80], ["salad", 150], ["oil", 5]], "Kajgana na ulju na tihoj vatri. Salata sa limunom."],
+  ]},
+  { name: "Dan B · Junetina", meals: [
+    ["Doručak", "Jaja, hleb, jabuka", [["egg", 150], ["bread", 80], ["apple", 150]], "Kuvana jaja 9 min ili kajgana bez ulja."],
+    ["Ručak", "Tortilje sa tunjevinom", [["tuna", 120], ["wrap", 120], ["salad", 100], ["yogurt", 60]], "Tunjevinu pomešaj sa jogurtom, senfom i biberom. Napuni tortilje sa salatom."],
+    ["Užina", "Šejk i banana", [["whey", 30], ["milk", 250], ["banana", 120], ["pb", 20]], "Protein promućkaj sa mlekom. Banana uz puter od kikirikija."],
+    ["Večera", "Bolonjeze", [["beef", 150], ["pasta", 100], ["passata", 200], ["oil", 10]], "Isprži meso, dodaj paradajz, beli luk i origano, krčkaj 10 min. Testenina 9–11 min."],
+  ]},
+  { name: "Dan C · Losos", meals: [
+    ["Doručak", "Ovsena kaša preko noći", [["yogurt", 250], ["oats", 50], ["berries", 100], ["pb", 15]], "Pomešaj uveče i ostavi u frižider."],
+    ["Ručak", "Piletina i pečeni krompir", [["chicken", 170], ["potato", 350], ["salad", 150], ["oil", 10]], "Krompir sa uljem na 200 °C 35 min. Piletinu dodaj poslednjih 20–25 min."],
+    ["Užina", "Sitni sir i jabuka", [["cottage", 200], ["apple", 150], ["almonds", 20]], "Iseci jabuku u sir, dodaj cimet."],
+    ["Večera", "Losos, pirinač, brokoli", [["salmon", 150], ["rice", 80], ["broccoli", 150]], "Losos na 200 °C 12–15 min sa limunom."],
+  ]},
+];
+ui.menu = Math.min(MENUS.length - 1, Math.max(0, +ui.menu || 0));
+
+const nutri = (key, g) => { const f = FOOD[key]; return { kcal: f[1] * g / 100, p: f[2] * g / 100, c: f[3] * g / 100, f: f[4] * g / 100 }; };
+function roundAmount(key, g) {
+  const unit = FOOD[key][5];
+  if (unit) return Math.max(1, Math.round(g / unit[3])) * unit[3];
+  return Math.max(5, Math.round(g / 5) * 5);
+}
+// proteinske namirnice prate telesnu težinu, a UH/masti popunjavaju ostatak kalorija
+function scaledMenu(menu) {
+  const bwF = Math.min(1.4, Math.max(0.75, state.profile.weight / 75));
+  let fixedK = 0, flexK = 0;
+  for (const [, , items] of menu.meals) for (const [k, g] of items) {
+    if (PROTEIN_FOODS.has(k)) fixedK += nutri(k, roundAmount(k, g * bwF)).kcal;
+    else if (FIXED_FOODS.has(k)) fixedK += nutri(k, g).kcal;
+    else flexK += nutri(k, g).kcal;
+  }
+  const s = Math.min(2.4, Math.max(0.35, (goals.kcal - fixedK) / flexK));
+  return menu.meals.map(([slot, dish, items, prep]) => [slot, dish, prep, items.map(([k, g]) => {
+    const amt = PROTEIN_FOODS.has(k) ? roundAmount(k, g * bwF) : FIXED_FOODS.has(k) ? g : roundAmount(k, g * s);
+    return { k, g: amt, ...nutri(k, amt) };
+  })]);
+}
+function amountLabel(k, g) {
+  const f = FOOD[k], unit = f[5];
+  if (unit) { const n = Math.round(g / unit[3]); return `${n} ${plural(n, unit)}`; }
+  return `${fmt(g)} ${f[6] || "g"}`;
+}
+function renderMeals() {
+  if (!goals) return;
+  $("menuTabs").innerHTML = MENUS.map((m, i) => `<button type="button" role="tab" aria-selected="${i === ui.menu}" data-menu="${i}">${esc(m.name)}</button>`).join("");
+  const meals = scaledMenu(MENUS[ui.menu]);
+  const sum = list => list.reduce((a, x) => ({ kcal: a.kcal + x.kcal, p: a.p + x.p, c: a.c + x.c, f: a.f + x.f }), { kcal: 0, p: 0, c: 0, f: 0 });
+  const day = sum(meals.flatMap(m => m[3]));
+  const dk = Math.round(day.kcal - goals.kcal) || 0, kOk = Math.abs(dk) <= goals.kcal * 0.05, pOk = day.p >= goals.p * 0.95;
+  $("dayTotal").innerHTML = `
+    <div class="tile enter"><span class="lbl" style="color:var(--mist2)">Kalorije</span><span class="v">${fmt(day.kcal)}</span><span class="d${kOk ? " ok" : ""}">cilj ${fmt(goals.kcal)}</span></div>
+    <div class="tile enter" style="--i:1"><span class="lbl" style="color:var(--mist2)">Proteini</span><span class="v">${fmt(day.p)} g</span><span class="d${pOk ? " ok" : ""}">cilj ${fmt(goals.p)} g</span></div>
+    <div class="tile enter" style="--i:2"><span class="lbl" style="color:var(--mist2)">UH</span><span class="v">${fmt(day.c)} g</span><span class="d">okvirno ${fmt(goals.c)} g</span></div>
+    <div class="tile enter" style="--i:3"><span class="lbl" style="color:var(--mist2)">Masti</span><span class="v">${fmt(day.f)} g</span><span class="d">okvirno ${fmt(goals.f)} g</span></div>`;
+  $("mealList").innerHTML = meals.map(([slot, dish, prep, items], i) => {
+    const t = sum(items);
+    return `<article class="card meal enter" style="--i:${i}">
+      <div class="meal-head"><div><span class="tag${i % 2 ? "" : " r"}">${slot}</span><h3>${esc(dish)}</h3></div><span class="k">${fmt(t.kcal)}<small>kcal</small></span></div>
+      <ul class="foods">${items.map(x => `<li><span class="amt">${amountLabel(x.k, x.g)}</span><span>${esc(FOOD[x.k][0])}</span><span class="kc">${fmt(x.kcal)}</span></li>`).join("")}</ul>
+      <div class="mchips"><span><b>P</b> ${fmt(t.p)} g</span><span><b>UH</b> ${fmt(t.c)} g</span><span><b>M</b> ${fmt(t.f)} g</span></div>
+      <details class="prep"><summary>Priprema</summary><p>${esc(prep)}</p></details>
+    </article>`;
+  }).join("");
+}
+$("menuTabs").addEventListener("click", e => {
+  const b = e.target.closest("[data-menu]"); if (!b) return;
+  ui.menu = +b.dataset.menu; saveUi(); renderMeals();
+});
+
+/* ================= DNEVNIK ================= */
+const byName = {}; for (const k in EX) byName[EX[k].name] = k;
+
+function exerciseOptions() {
+  const custom = [...new Set(state.logs.map(l => l.exercise))].filter(n => !(n in byName)).sort((a, b) => a.localeCompare(b, LOC));
+  const seen = new Set();
+  const groups = DAYS.filter(d => d.ex).map(d => `<optgroup label="${d.title} · ${d.focus}">${d.ex.filter(([k]) => !seen.has(k) && seen.add(k)).map(([k]) => `<option>${esc(EX[k].name)}</option>`).join("")}</optgroup>`);
+  const cust = custom.length ? `<optgroup label="Tvoje vežbe">${custom.map(n => `<option>${esc(n)}</option>`).join("")}</optgroup>` : "";
+  const cur = $("lEx").value;
+  $("lEx").innerHTML = groups.join("") + cust + `<option value="__other">Druga vežba…</option>`;
+  if (cur) $("lEx").value = cur;
+
+  const logged = [...new Set(state.logs.map(l => l.exercise))].sort((a, b) => a.localeCompare(b, LOC));
+  const f = $("filter").value;
+  $("filter").innerHTML = `<option value="">Sve vežbe</option>` + logged.map(n => `<option>${esc(n)}</option>`).join("");
+  if (logged.includes(f)) $("filter").value = f;
+
+  const counts = {};
+  for (const l of state.logs) if (l.weight > 0) counts[l.exercise] = (counts[l.exercise] || 0) + 1;
+  const chartList = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b, LOC));
+  $("chartEx").innerHTML = chartList.length ? chartList.map(n => `<option>${esc(n)}</option>`).join("") : `<option value="">Još nema podataka</option>`;
+  if (chartList.includes(ui.chartEx)) $("chartEx").value = ui.chartEx;
+}
+
+function renderChart() {
+  const name = $("chartEx").value, box = $("chartBox"), u = state.unit;
+  $("chartTitle").textContent = name || "Najveća težina";
+  const byDate = {};
+  for (const l of state.logs) if (l.exercise === name && l.weight > 0) {
+    const w = fromKg(toKg(l.weight, l.unit), u);
+    if (!byDate[l.date] || w > byDate[l.date].w) byDate[l.date] = { w, sets: l.sets, reps: l.reps };
+  }
+  const pts = Object.keys(byDate).sort().map(d => ({ d, t: new Date(d + "T12:00:00").getTime(), ...byDate[d] }));
+  if (pts.length < 2) {
+    box.innerHTML = `<div class="chart-empty">${name ? "Treba bar dva treninga za liniju napretka." : "Sačuvaj prve treninge i ovde ćeš videti kako rastu tegovi."}</div>`;
+    return;
+  }
+  const W = 640, H = 240, L = 46, R = 62, T = 14, B = 30;
+  let lo = Math.min(...pts.map(p => p.w)), hi = Math.max(...pts.map(p => p.w));
+  const raw = Math.max((hi - lo) / 4, 1), mag = 10 ** Math.floor(Math.log10(raw)), step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => s >= raw);
+  const flat = hi === lo;
+  lo = Math.max(0, Math.floor(lo / step) * step - (flat ? step : 0)); hi = Math.ceil(hi / step) * step + (flat ? step : 0);
+  if (hi === lo) hi = lo + step;
+  const t0 = pts[0].t, t1 = pts[pts.length - 1].t;
+  const x = t => L + (t - t0) / (t1 - t0) * (W - L - R), y = w => T + (1 - (w - lo) / (hi - lo)) * (H - T - B);
+  let grid = "";
+  for (let v = lo; v <= hi + 1e-9; v += step) grid += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text class="axis-t" x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${fmt1(v)}</text>`;
+  const line = pts.map((p, i) => `${i ? "L" : "M"}${x(p.t).toFixed(1)},${y(p.w).toFixed(1)}`).join("");
+  const area = `${line}L${x(t1)},${H - B}L${L},${H - B}Z`;
+  const last = pts[pts.length - 1];
+  const xl = [pts[0], last].map((p, i) => `<text class="axis-t" x="${x(p.t)}" y="${H - 8}" text-anchor="${i ? "end" : "start"}">${dateShort(p.d)}</text>`).join("");
+  box.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Najveća težina po treningu za ${esc(name)}, od ${fmt1(pts[0].w)} do ${fmt1(last.w)} ${u}">
+      ${grid}<path class="area" d="${area}"/><path class="ln" id="ln" d="${line}"/>
+      ${pts.map(p => `<circle class="pt" cx="${x(p.t)}" cy="${y(p.w)}" r="4.5"/>`).join("")}
+      <text class="end-t" x="${x(last.t) + 9}" y="${y(last.w) + 4}">${fmt1(last.w)} ${u}</text>
+      ${xl}
+      <line class="xh" id="xh" x1="0" x2="0" y1="${T}" y2="${H - B}" visibility="hidden"/>
+      <rect x="${L - 10}" y="0" width="${W - L - R + 20}" height="${H}" fill="transparent"/>
+    </svg><div class="tip" id="tip" hidden></div>`;
+  const ln = $("ln"); ln.style.setProperty("--len", Math.ceil(ln.getTotalLength()));
+  const svg = box.querySelector("svg"), tip = $("tip"), xh = $("xh");
+  const move = ev => {
+    const r = svg.getBoundingClientRect(), mx = (ev.clientX - r.left) / r.width * W;
+    const p = pts.reduce((a, b) => Math.abs(x(b.t) - mx) < Math.abs(x(a.t) - mx) ? b : a);
+    xh.setAttribute("x1", x(p.t)); xh.setAttribute("x2", x(p.t)); xh.setAttribute("visibility", "visible");
+    tip.hidden = false;
+    tip.innerHTML = `${dateShort(p.d)} · <b>${fmt1(p.w)} ${u}</b> · ${p.sets}×${p.reps}`;
+    tip.style.left = Math.min(Math.max(x(p.t) / W * r.width, 90), r.width - 90) + "px";
+    tip.style.top = (y(p.w) / H * r.height) + "px";
+  };
+  svg.addEventListener("pointermove", move);
+  svg.addEventListener("pointerdown", move);
+  svg.addEventListener("pointerleave", () => { tip.hidden = true; xh.setAttribute("visibility", "hidden"); });
+}
+$("chartEx").addEventListener("change", () => { ui.chartEx = $("chartEx").value; saveUi(); renderChart(); });
+
+function formHint() {
+  const other = $("lEx").value === "__other";
+  $("customWrap").hidden = !other;
+  const k = byName[$("lEx").value];
+  if (other || !k) return;
+  const a = advise(k, state.unit);
+  $("lW").value = a.w === "" ? 0 : a.w;
+  $("lReps").value = a.r;
+  $("lSets").value = (DAYS.flatMap(d => d.ex || []).find(([kk]) => kk === k) || [0, 3])[1];
+}
+$("lEx").addEventListener("change", formHint);
+
+document.querySelectorAll("input[name=unit]").forEach(r => r.addEventListener("change", () => {
+  state.unit = r.value; save(); applyUnit();
+  draft.days = {}; saveDraft(); // težine u nacrtu su u staroj jedinici
+  refreshLog(); renderHero(); renderSession(); formHint();
+}));
+function applyUnit() {
+  $(state.unit === "lb" ? "unitLb" : "unitKg").checked = true;
+  document.querySelectorAll(".unitLbl").forEach(s => s.textContent = state.unit);
+}
+
+$("logForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const other = $("lEx").value === "__other";
+  const name = other ? $("lCustom").value.trim() : $("lEx").value;
+  if (!name) { toast("Upiši naziv vežbe"); $("lCustom").focus(); return; }
+  state.logs.push({
+    id: uid(), date: $("lDate").value || todayISO(), exercise: name.slice(0, 60),
+    sets: clampInt($("lSets").value, 1, 50), reps: clampInt($("lReps").value, 1, 500),
+    weight: Math.max(0, +$("lW").value || 0), unit: state.unit, notes: ""
+  });
+  save(); $("lCustom").value = "";
+  refreshLog();
+  $("lEx").value = name; $("customWrap").hidden = true;
+  renderHero(); renderSession();
+  toast("Dodato: " + name);
+});
+
+let armed = null;
+$("hist").addEventListener("click", e => {
+  if (e.target.closest("#sampleBtn")) return loadSample();
+  const b = e.target.closest("[data-del]"); if (!b) return;
+  const id = b.dataset.del;
+  if (armed !== id) { armed = id; renderHistory(); return; }
+  state.logs = state.logs.filter(l => l.id !== id); armed = null; save(); refreshLog(); toast("Obrisano");
+});
+$("filter").addEventListener("change", renderHistory);
+
+function renderHistory() {
+  const u = state.unit, f = $("filter").value;
+  if (!state.logs.length) {
+    $("hist").innerHTML = `<tr><td colspan="4"><div class="empty"><p>Još ništa. Štikliraj serije u kartici Trening i sačuvaj trening.</p>
+      <button class="btn" type="button" id="sampleBtn">Učitaj primer</button></div></td></tr>`;
+    return;
+  }
+  const rows = state.logs.filter(l => !f || l.exercise === f).sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
+  const best = {}, count = {};
+  for (const l of state.logs) { const w = toKg(l.weight, l.unit); count[l.exercise] = (count[l.exercise] || 0) + 1; if (!(l.exercise in best) || w > best[l.exercise]) best[l.exercise] = w; }
+  let html = "", lastDate = null;
+  for (const l of rows) {
+    if (l.date !== lastDate) { lastDate = l.date; html += `<tr class="date-row"><td colspan="4">${dateLong(l.date)}</td></tr>`; }
+    const wKg = toKg(l.weight, l.unit), w = fromKg(wKg, u);
+    const isPR = wKg > 0 && count[l.exercise] > 1 && Math.abs(wKg - best[l.exercise]) < 1e-6 && byName[l.exercise] !== "assisted";
+    html += `<tr>
+      <td>${esc(l.exercise)}${isPR ? '<span class="pr">Rekord</span>' : ""}${l.notes ? `<div class="nt">${esc(l.notes)}</div>` : ""}</td>
+      <td class="n">${l.sets} × ${l.reps}</td>
+      <td class="n">${w ? fmt1(w) + " " + u : "—"}</td>
+      <td style="text-align:right"><button class="btn sm${armed === l.id ? " red" : ""}" type="button" data-del="${esc(l.id)}">${armed === l.id ? "Sigurno?" : "Obriši"}</button></td>
+    </tr>`;
+  }
+  $("hist").innerHTML = html || `<tr><td colspan="4"><div class="empty">Nema unosa za ovu vežbu.</div></td></tr>`;
+}
+
+function renderStats() {
+  const cut = isoOf(Date.now() - 6 * 864e5);
+  const recent = state.logs.filter(l => l.date >= cut);
+  $("stWeek").textContent = new Set(recent.map(l => l.date)).size;
+  $("stSessions").textContent = new Set(state.logs.map(l => l.date)).size;
+  $("stSets").textContent = fmt(state.logs.reduce((a, l) => a + l.sets, 0));
+  const vol = recent.reduce((a, l) => a + (byName[l.exercise] === "assisted" ? 0 : fromKg(toKg(l.weight, l.unit), state.unit) * l.sets * l.reps), 0);
+  $("stVol").textContent = fmt(vol) + " " + state.unit;
+}
+
+function refreshLog() { exerciseOptions(); renderHistory(); renderStats(); if (ui.view === "dnevnik") renderChart(); }
+
+function loadSample() {
+  const d = n => isoOf(Date.now() - n * 864e5);
+  const s = (days, k, sets, reps, w) => ({ id: uid(), date: d(days), exercise: EX[k].name, sets, reps, weight: w, unit: "kg", notes: "" });
+  state.logs = [
+    s(24, "bench", 3, 8, 12), s(24, "cablerow", 3, 10, 30), s(24, "pulldown", 3, 10, 35),
+    s(17, "bench", 3, 10, 12), s(17, "cablerow", 3, 12, 30), s(17, "pulldown", 3, 12, 35),
+    s(10, "bench", 3, 7, 14), s(10, "cablerow", 3, 9, 32.5), s(10, "pulldown", 3, 9, 37.5),
+    s(9, "goblet", 3, 12, 16), s(9, "rdl", 3, 10, 14), s(9, "legpress", 3, 12, 80),
+    s(3, "bench", 3, 10, 14), s(3, "cablerow", 3, 12, 32.5), s(3, "pulldown", 3, 11, 37.5),
+    s(2, "goblet", 3, 9, 20), s(2, "rdl", 3, 12, 14), s(2, "legpress", 3, 13, 90),
+  ];
+  save(); draft.days = {}; saveDraft(); refreshLog(); renderHero(); renderSession(); toast("Primer učitan");
+}
+
+/* ---------- izvoz / uvoz ---------- */
+const exportJSON = () => JSON.stringify({ ...state, exportedAt: new Date().toISOString() }, null, 2);
+$("exportBtn").addEventListener("click", () => {
+  const fname = `teg-po-teg-${todayISO()}.json`;
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([exportJSON()], { type: "application/json" })); a.download = fname;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  const m = $("exportMsg"); m.className = "msg ok"; m.textContent = `${state.logs.length} unosa → ${fname}`;
+});
+$("copyBtn").addEventListener("click", () => {
+  const m = $("exportMsg");
+  navigator.clipboard.writeText(exportJSON()).then(
+    () => { m.className = "msg ok"; m.textContent = "Kopirano."; },
+    () => { m.className = "msg err"; m.textContent = "Kopiranje je blokirano. Koristi „Preuzmi JSON“."; });
+});
+function doImport(mode) {
+  const m = $("importMsg"), file = $("importFile").files[0];
+  if (!file) { m.className = "msg err"; m.textContent = "Prvo izaberi .json fajl."; return; }
+  const r = new FileReader();
+  r.onload = () => {
+    let data; try { data = sanitize(JSON.parse(r.result)); } catch (e) { data = null; }
+    if (!data) { m.className = "msg err"; m.textContent = "Ovo nije izvoz iz ove aplikacije."; return; }
+    if (mode === "replace") { state = data; m.textContent = `Učitano ${data.logs.length} unosa.`; }
+    else {
+      const ids = new Set(state.logs.map(l => l.id)), add = data.logs.filter(l => !ids.has(l.id));
+      state.logs.push(...add);
+      m.textContent = `Dodato ${add.length} novih unosa.`;
+    }
+    m.className = "msg ok";
+    save(); draft.days = {}; saveDraft();
+    loadProfileInputs(); calc(); applyUnit(); refreshLog(); renderHero(); renderSession();
+    $("importFile").value = "";
+  };
+  r.onerror = () => { m.className = "msg err"; m.textContent = "Fajl nije mogao da se pročita."; };
+  r.readAsText(file);
+}
+$("mergeBtn").addEventListener("click", () => doImport("merge"));
+$("replaceBtn").addEventListener("click", () => doImport("replace"));
+
+/* ================= SAVETI: nedeljni volumen ================= */
+function renderVolume() {
+  const vol = {};
+  for (const d of DAYS) for (const [k, s] of d.ex || []) {
+    for (const m of EX[k].p) vol[m] = (vol[m] || 0) + s;
+    for (const m of EX[k].s) vol[m] = (vol[m] || 0) + s / 2;
+  }
+  const order = ["Grudi", "Leđa", "Ramena", "Biceps", "Triceps", "Prednja loža", "Zadnja loža", "Gluteus", "Listovi", "Trbuh"];
+  const MAX = 18, pc = v => (v / MAX * 100).toFixed(1) + "%";
+  $("volBody").innerHTML = order.map((m, i) => `<tr>
+      <td>${m}</td>
+      <td class="barcell"><div class="vb"><span class="band" style="left:${pc(8)};width:${pc(7)}"></span><i style="width:${pc(Math.min(vol[m] || 0, MAX))};--i:${i}"></i></div></td>
+      <td class="n" style="text-align:right">${fmt1(vol[m] || 0)}</td>
+    </tr>`).join("");
+}
+
+/* ================= START ================= */
+applyAccent(ui.accent);
+document.querySelectorAll("[data-ransom]").forEach(ransom);
+$("lDate").value = todayISO();
+renderWeek(); renderHero(); renderSession();
+loadProfileInputs(); calc();
+applyUnit(); refreshLog(); formHint();
+renderVolume();
+const fromHash = location.hash.slice(1);
+applyView(VIEWS.includes(fromHash) ? fromHash : (VIEWS.includes(ui.view) ? ui.view : "trening"));
+})();
+</script>
+</body>
+</html>
