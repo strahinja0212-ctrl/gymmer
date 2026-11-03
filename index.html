@@ -449,7 +449,8 @@ button.btn.sm { padding: 7px 12px; min-height: 34px; }
 .lhist li .btn { padding: 4px 8px; min-height: 26px; }
 #tab-supps td:first-child, #tab-supps th:first-child { min-width: 132px; }
 
-.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s4); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); margin: var(--s4) 0; }
+.grid2 > .card { margin: 0; }
 @media (max-width: 620px) { .grid2 { grid-template-columns: 1fr; } }
 ul { padding-left: 1.15rem; margin: var(--s2) 0; }
 li { margin: 6px 0; color: var(--muted); }
@@ -1172,67 +1173,90 @@ button.btn { font-family: var(--font-mono); font-size: var(--fs-xs); font-weight
     <p class="note">Protein and calories are per 100 g / 100 ml unless stated. Prices approximate (Maxi/Lidl/Univerexport, mid-2026) — chase the weekly akcije for chicken and dairy.</p>
   </div>
 
-  <h2 data-short="Day plan">A day of eating <span class="tag">~2,800 kcal · 155 g P</span></h2>
+  <h2 data-short="Day plan">A day of eating <span class="tag">~3,200 kcal · ~170 g P</span></h2>
+  <p class="sub">Two batch cooks feed the whole day: <b>burritos</b> every ~10 days, <b>lunch boxes</b> every week.</p>
   <div class="grid2">
     <div class="card">
-      <h3>Breakfast — ~650 kcal · 40 g P</h3>
-      <p>80 g oats + 300 ml milk + 1 banana + 1 scoop whey (30 g)</p>
-      <p class="note"><b>Swap:</b> 3 eggs + 2 slices bread + 100 g mladi sir + tomato</p>
+      <h3>Breakfast <span class="tag">~900 kcal · 53 g P</span></h3>
+      <p>1 chicken burrito + a glass of milk</p>
+      <p class="note">Fridge: microwave 1.5–2 min in a damp paper towel. Frozen: move it to the fridge the night before.</p>
     </div>
     <div class="card">
-      <h3>Lunch — ~850 kcal · 55 g P</h3>
-      <p>200 g chicken breast + 100 g rice (dry weight) + big salad with 1 tbsp oil</p>
-      <p class="note"><b>Swap:</b> pasulj with smoked meat + bread · chicken thighs + potatoes · tuna pasta (1 can + 100 g pasta)</p>
+      <h3>Lunch <span class="tag">~850 kcal · 50 g P</span></h3>
+      <p>Teriyaki chicken box: chicken, rice, broccoli</p>
+      <p class="note">Microwave 2–3 min with a splash of water on the rice. <b>Lazy day:</b> tuna pasta (125 g pasta + 1 can tuna + passata + cheese, 12 min).</p>
     </div>
     <div class="card">
-      <h3>Snack — ~500 kcal · 25 g P</h3>
-      <p>450 g grčki jogurt + 40 g oats + honey + handful of walnuts</p>
-      <p class="note"><b>Swap:</b> 2 slices bread + kikiriki puter + milk · training days: whey + banana after the session</p>
+      <h3>Snack <span class="tag">~700 kcal · 25 g P</span></h3>
+      <p>80 g oats + 300 ml milk + 1 banana + 1 spoon kikiriki puter</p>
+      <p class="note">Stir in the daily <b>5 g creatine</b> here.</p>
     </div>
     <div class="card">
-      <h3>Dinner — ~700 kcal · 40 g P</h3>
-      <p>3-egg omelet + 100 g mladi sir + 2 slices bread + veggies</p>
-      <p class="note"><b>Swap:</b> sardines on bread + salad · sočivo stew + sir · leftover lunch</p>
+      <h3>Dinner <span class="tag">~750 kcal · 45 g P</span></h3>
+      <p>1 chicken burrito</p>
+      <p class="note">Still hungry: a second glass of milk or a yoghurt.</p>
     </div>
   </div>
 
   <div class="card full">
-    <h3>Weekly shopping list</h3>
+    <h3>Batch 1 — 20 burritos <span class="tag">every ~10 days · ~2 h</span></h3>
+    <ul>
+      <li><b>Rice:</b> cook 500 g, let it cool.</li>
+      <li><b>Chicken:</b> 3 kg thighs in small cubes, fried in 2–3 batches with taco seasoning (or paprika + cumin + garlic + salt).</li>
+      <li><b>Veg:</b> fry 4 peppers + 3 onions, ~5 min.</li>
+      <li><b>Mix:</b> chicken, rice, veg, 3 cans beans, 2 cans corn (both drained) in one big pot.</li>
+      <li><b>Roll:</b> warm each tortilla 10 s, filling + a handful of cheese (800 g total), fold the sides, roll tight.</li>
+      <li><b>Store:</b> wrap each in foil. 4–6 in the fridge (3–4 days max), the rest frozen (3 months).</li>
+    </ul>
+    <p class="note">Keep sour cream and salsa out of the filling, they go watery frozen. Add them fresh.</p>
+  </div>
+
+  <div class="card full">
+    <h3>Batch 2 — 7 lunch boxes <span class="tag">weekly · ~40 min</span></h3>
+    <ul>
+      <li><b>Chicken:</b> 1.5 kg thighs in cubes, fried. Add 4 spoons soy sauce + 2 spoons honey + 2 cloves garlic, reduce 2 min.</li>
+      <li><b>Rice:</b> cook 700 g.</li>
+      <li><b>Box:</b> chicken + rice + a handful of frozen broccoli or mixed veg, into 7 boxes.</li>
+      <li><b>Store:</b> 3 in the fridge, 4 frozen.</li>
+    </ul>
+    <p class="note">Cook it alongside the burrito chicken on burrito day and it costs almost no extra time.</p>
+  </div>
+
+  <div class="card full">
+    <h3>Shopping list</h3>
     <div class="scroll-x">
     <table>
-      <thead><tr><th>Item</th><th>Amount</th><th class="num">~din</th></tr></thead>
+      <thead><tr><th>Item</th><th class="num">Amount</th></tr></thead>
       <tbody>
-        <tr class="rowgroup"><td colspan="3">Protein</td></tr>
-        <tr><td>Jaja</td><td>30</td><td class="num">1,000</td></tr>
-        <tr><td>Pileća prsa / batak</td><td>1.5 kg</td><td class="num">1,200</td></tr>
-        <tr><td>Mladi sir</td><td>500 g</td><td class="num">300</td></tr>
-        <tr><td>Grčki jogurt</td><td>3 pots</td><td class="num">700</td></tr>
-        <tr><td>Tunjevina / sardina</td><td>3 cans</td><td class="num">600</td></tr>
-        <tr><td>Mleko 2.8%</td><td>4 L</td><td class="num">600</td></tr>
+        <tr class="rowgroup"><td colspan="2">Burrito batch · every ~10 days</td></tr>
+        <tr><td>Pileći batak (thighs)</td><td class="num">3 kg</td></tr>
+        <tr><td>Large tortillas</td><td class="num">20</td></tr>
+        <tr><td>Shredded cheese</td><td class="num">800 g</td></tr>
+        <tr><td>Rice</td><td class="num">500 g</td></tr>
+        <tr><td>Canned beans · canned corn</td><td class="num">3 · 2 cans</td></tr>
+        <tr><td>Peppers · onions</td><td class="num">4 · 3</td></tr>
+        <tr><td>Taco seasoning</td><td class="num">3 packets</td></tr>
       </tbody>
       <tbody>
-        <tr class="rowgroup"><td colspan="3">Carbs &amp; grains</td></tr>
-        <tr><td>Ovsene pahuljice</td><td>1 kg</td><td class="num">300</td></tr>
-        <tr><td>Pirinač (rice)</td><td>1 kg</td><td class="num">250</td></tr>
-        <tr><td>Testenina (pasta)</td><td>500 g</td><td class="num">150</td></tr>
-        <tr><td>Hleb (bread)</td><td>week's worth</td><td class="num">350</td></tr>
-        <tr><td>Pasulj / sočivo</td><td>500 g</td><td class="num">180</td></tr>
+        <tr class="rowgroup"><td colspan="2">Every week</td></tr>
+        <tr><td>Pileći batak (thighs), lunch boxes</td><td class="num">1.5 kg</td></tr>
+        <tr><td>Rice, lunch boxes</td><td class="num">700 g</td></tr>
+        <tr><td>Frozen broccoli / mixed veg</td><td class="num">2 bags</td></tr>
+        <tr><td>Mleko 2.8%</td><td class="num">4 L</td></tr>
+        <tr><td>Ovsene pahuljice (oats)</td><td class="num">~600 g</td></tr>
+        <tr><td>Banane</td><td class="num">7</td></tr>
       </tbody>
       <tbody>
-        <tr class="rowgroup"><td colspan="3">Produce</td></tr>
-        <tr><td>Banane</td><td>2 kg</td><td class="num">400</td></tr>
-        <tr><td>Povrće + salata</td><td>mixed</td><td class="num">800</td></tr>
+        <tr class="rowgroup"><td colspan="2">Lasts weeks</td></tr>
+        <tr><td>Soy sauce · honey · garlic</td><td class="num">1 each</td></tr>
+        <tr><td>Kikiriki puter</td><td class="num">1 jar</td></tr>
+        <tr><td>Tuna · pasta · passata (lazy-day lunch)</td><td class="num">2 cans · 500 g · 1</td></tr>
+        <tr><td>Kreatin monohidrat</td><td class="num">500 g ≈ 100 days</td></tr>
+        <tr><td>Foil · freezer bags · 7 meal-prep boxes</td><td class="num">once</td></tr>
       </tbody>
-      <tbody>
-        <tr class="rowgroup"><td colspan="3">Extras</td></tr>
-        <tr><td>Kikiriki puter</td><td>lasts a month</td><td class="num">800</td></tr>
-      </tbody>
-      <tfoot>
-        <tr><td>Weekly total</td><td></td><td class="num">~7,400</td></tr>
-      </tfoot>
     </table>
     </div>
-    <p class="note">≈ 27,000–32,000 din/month of food for the whole bulk — supplements on top add ~3,000–4,000 (next tab).</p>
+    <p class="note">Buy thighs on akcija, it's the biggest saving. Calories are estimates.</p>
   </div>
 </section>
 
