@@ -2,7 +2,7 @@
 
 A single-page, phone-first gym plan: 3-phase beginner→intermediate training roadmap
 (with form videos and anatomical muscle heatmaps **per workout and per exercise**),
-nutrition targets for a 75 kg lean bulk — including plain-language explainers for
+nutrition targets for a 70 → 90 kg bulk — including plain-language explainers for
 protein, carbs, fat, fiber and calories, and a reason for every Serbian budget food —
 an evidence-based supplement guide (Serbian shops/prices), and a tap-to-log
 training consistency tracker.

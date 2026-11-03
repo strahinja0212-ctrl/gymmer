@@ -57,7 +57,7 @@ All persistence is `localStorage` under the `gymmer.` prefix, via the `LS` get/s
 
 - Colors come only from the token variables, and never a raw hex outside a theme block. Check any new color in **all six** themes, including the two light ones (Space Wolves, Black Templars). Text on a `--lift` fill uses `--on-lift`, never `#fff`.
 - **No emoji.** The design is entirely typographic; use a mono `.eyebrow`, a `.tag` chip or a Bricolage heading instead. This is the main thing that separates the current look from the old one.
-- Prices, foods and shops are Serbia-specific (dinars, Maxi/Lidl, Ogistra/Proteini.si); nutrition targets assume a 75 kg lean bulk.
+- Prices, foods and shops are Serbia-specific (dinars, Maxi/Lidl, Ogistra/Proteini.si); nutrition targets assume a 70 → 90 kg bulk (~3,100 kcal, 150 g protein, +0.25–0.5 kg/week).
 - Nutrition and supplement claims in the page are tied to the sources linked in the footer — keep new claims evidence-backed and cited there.
 - Wide tables are wrapped in `<div class="scroll-x">`; the layout is mobile-first, 720 px until the 960 px breakpoint widens it.
 - All interactive elements need a visible `:focus-visible` ring, and hover rules go inside `@media (hover: hover)` so they don't stick after a phone tap.
